@@ -2,17 +2,39 @@
 import Image from 'next/image'
 import Navbar from '@components/Navbar'
 import styled from '@emotion/styled'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect } from 'react'
 
 function Home() {
+  gsap.registerPlugin(ScrollTrigger)
+
+  useEffect(() => {
+    const sectionImages: Element[] = gsap.utils.toArray('.section-image')
+
+    sectionImages.forEach((section, idx) => {
+      gsap.fromTo(
+        section,
+        {
+          x: -400,
+        },
+        {
+          x: 0,
+          duration: 1,
+          delay: ((idx + 1) % 3) * 0.2,
+          scrollTrigger: {
+            trigger: section,
+            toggleActions: 'play reset play reset',
+          },
+        },
+      )
+    })
+  }, [])
+
   return (
     <div>
       <Header className="pt-4 flex items-center justify-between relative">
-        <Image
-          src="/logo.png"
-          alt="Hotel Logo"
-          width="150"
-          height="150"
-        ></Image>
+        <Image src="/logo.png" alt="Hotel Logo" width="150" height="75"></Image>
         <Navbar />
       </Header>
       <main>
@@ -21,17 +43,20 @@ function Home() {
           className="relative"
           style={{
             width: '100%',
-            height: '80vh',
+            height: '100vh',
             backgroundImage: `url('/bg-white.jpeg')`,
           }}
         >
           <SectionImageWrapper>
             <Image
+              className="section-image"
               src="/hotel_room_main.jpeg"
-              width="400"
-              height="300"
+              width="500"
+              height="400"
               alt="Hotel Room Main"
               style={{
+                width: 'auto',
+                height: 'auto',
                 marginTop: '100px',
                 borderRadius: '8px',
                 marginRight: '15px',
@@ -40,15 +65,17 @@ function Home() {
             />
             <div>
               <Image
+                className="section-image"
                 src="/desc_title1.png"
-                width="500"
-                height="300"
+                width="400"
+                height="109"
                 alt="Hotel Room Main"
               />
               <Image
+                className="section-image"
                 src="/desc_text1.png"
-                width="500"
-                height="300"
+                width="488"
+                height="107"
                 alt="Hotel Room Main"
               />
             </div>
@@ -71,19 +98,21 @@ function Home() {
               }}
             >
               <Image
+                className="section-image"
                 src="/desc_title2.png"
-                width="300"
-                height="300"
+                width="500"
+                height="120"
                 alt="Hotel Room Main"
               />
               <Image
+                className="section-image"
                 src="/desc_text2.png"
-                width="700"
-                height="500"
+                width="589"
+                height="196"
                 alt="Hotel Room Main"
               />
             </div>
-            <ImageWrapper>
+            <ImageWrapper className="section-image">
               <Image
                 src="/hotel_room_2.jpeg"
                 alt="Hotel Room Main"
@@ -123,18 +152,21 @@ function Home() {
                 width="300"
                 height="300"
                 alt="Hotel Room Main"
+                className="section-image w-full h-auto"
               />
               <Image
                 src="/desc_text3-1.png"
                 width="300"
                 height="300"
                 alt="Hotel Room Main"
+                className="section-image w-full h-auto"
               />
               <Image
                 src="/desc_text3-2.png"
                 width="400"
                 height="400"
                 alt="Hotel Room Main"
+                className="section-image w-full h-auto"
               />
             </div>
           </div>
@@ -177,7 +209,7 @@ const ImageWrapper = styled.div`
   width: 700px;
   height: 500px;
   top: 50px;
-  right: -150px;
+  right: -50px;
 
   @media screen and (max-width: 762px) {
     width: 500px;
