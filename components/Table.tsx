@@ -36,6 +36,11 @@ const StyledRow = styled(CommonRow)`
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
+
+  &:hover {
+    cursor: pointer;
+    background: var(--color-grey-100);
+  }
 `
 
 const StyledBody = styled.section`
@@ -97,10 +102,20 @@ function Header({
   )
 }
 
-function Row({ children }: { children: ReactNode }) {
+function Row({
+  onClick,
+  children,
+}: {
+  onClick?: () => void
+  children: ReactNode
+}) {
   const tableContext = useContext(TableContext)
   return (
-    <StyledRow role="row" columns={tableContext?.columns ?? ''}>
+    <StyledRow
+      onClick={onClick}
+      role="row"
+      columns={tableContext?.columns ?? ''}
+    >
       {children}
     </StyledRow>
   )

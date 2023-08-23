@@ -2,7 +2,6 @@
 import { useRooms } from '@/hooks/useRooms'
 import Table from '@components/Table'
 import RoomRow, { IRoom } from './RoomRow'
-import Uploader from '@components/Uploader'
 
 function RoomTable() {
   const { isLoading, rooms } = useRooms()

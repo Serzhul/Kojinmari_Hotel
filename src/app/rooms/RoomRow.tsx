@@ -2,6 +2,7 @@ import { formatCurrency } from '@/utils/helpers'
 import Table from '@components/Table'
 import styled from '@emotion/styled'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 export interface IRoom {
   id: number
@@ -24,6 +25,7 @@ const ROOM_TYPE_MAP = {
 type ROOM_TYPE_KEY = keyof typeof ROOM_TYPE_MAP
 
 function RoomRow({ room }: { room: IRoom }) {
+  const router = useRouter()
   const {
     id,
     name,
@@ -36,7 +38,7 @@ function RoomRow({ room }: { room: IRoom }) {
   } = room
 
   return (
-    <Table.Row>
+    <Table.Row onClick={() => router.push(`/rooms/${id}`)}>
       <Image width={640} height={400} src={image} alt={name} style={ImgStyle} />
       <Room>{name}</Room>
       <div>{ROOM_TYPE_MAP[room_type as ROOM_TYPE_KEY]}</div>
