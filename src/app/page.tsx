@@ -1,10 +1,10 @@
 'use client'
 import Image from 'next/image'
-import Navbar from '@components/Navbar'
 import styled from '@emotion/styled'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect } from 'react'
+import Uploader from '@components/Uploader'
 
 function Home() {
   gsap.registerPlugin(ScrollTrigger)
@@ -33,10 +33,7 @@ function Home() {
 
   return (
     <div>
-      <Header className="pt-4 flex items-center justify-between relative">
-        <Image src="/logo.png" alt="Hotel Logo" width="150" height="75"></Image>
-        <Navbar />
-      </Header>
+      <Uploader />
       <main>
         {/* Section 1*/}
         <section
@@ -185,16 +182,6 @@ function Home() {
 }
 
 export default Home
-
-const Header = styled.header`
-  width: 100%;
-  background-color: #fff;
-  position: fixed;
-  top: 0;
-  z-index: 8;
-  border-bottom: 1px solid #c8c8c8;
-  padding-bottom: 5px;
-`
 
 const SectionImageWrapper = styled.div`
   display: flex;
