@@ -16,12 +16,13 @@ import {
 } from 'tabler-icons-react'
 import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from '../RoomRow'
 import { useRouter } from 'next/navigation'
+import Spinner from '@components/Spinner'
 
 function RoomPage() {
   const router = useRouter()
   const { isLoading, room } = useRoomDetail()
 
-  if (isLoading) return <div>isLoading...</div>
+  if (isLoading) return <Spinner />
 
   const roomDetail = room[0]
 

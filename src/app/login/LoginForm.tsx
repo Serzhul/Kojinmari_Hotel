@@ -2,13 +2,33 @@ import { useState } from 'react'
 import Form from '@components/Form'
 import styled from '@emotion/styled'
 import FormRowVertical from '@components/FormRowVertical'
+import { useLogin } from '@/hooks/useLogin'
+import { SyntheticEvent } from 'react'
+import SpinnerMini from '@components/SpinnerMini'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const { login, isLoading } = useLogin()
+
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault()
+    if (!email || !password) return
+
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail('')
+          setPassword('')
+        },
+      },
+    )
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <FormRowVertical label="이메일">
         <Input
           type="email"
@@ -25,10 +45,14 @@ function LoginForm() {
           id="password"
           autoComplete="current-password"
           value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={isLoading}
         />
       </FormRowVertical>
       <FormRowVertical>
-        <LoginButton>로그인</LoginButton>
+        <LoginButton disabled={isLoading}>
+          {isLoading ? <SpinnerMini /> : '로그인'}
+        </LoginButton>
       </FormRowVertical>
     </Form>
   )

@@ -1,7 +1,6 @@
 'use client'
 import styled from '@emotion/styled'
 import Logo from '@components/Logo'
-import Heading from '@components/Heading'
 import LoginForm from './LoginForm'
 
 function LoginPage() {
