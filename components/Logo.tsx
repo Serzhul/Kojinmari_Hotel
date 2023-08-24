@@ -1,21 +1,16 @@
 'use client'
 import styled from '@emotion/styled'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { CSSProperties } from 'react'
 
-function Logo() {
-  const router = useRouter()
+function Logo({ style }: { style?: CSSProperties }) {
   return (
-    <StyledImage onClick={() => router.push('/')}>
-      <Image src="/logo.png" alt="Hotel Logo" width="150" height="75"></Image>
-    </StyledImage>
+    <StyledLogo style={style}>
+      <Image src="/logo.png" alt="Hotel Logo" width="150" height="75" />
+    </StyledLogo>
   )
 }
 
-const StyledImage = styled.div`
-  &:hover {
-    cursor: pointer;
-  }
-`
-
 export default Logo
+
+const StyledLogo = styled.div``

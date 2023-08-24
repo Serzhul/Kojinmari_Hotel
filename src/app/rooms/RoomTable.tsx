@@ -2,13 +2,14 @@
 import { useRooms } from '@/hooks/useRooms'
 import Table from '@components/Table'
 import RoomRow, { IRoom } from './RoomRow'
+import Spinner from '@components/Spinner'
 
 function RoomTable() {
   const { isLoading, rooms } = useRooms()
 
   return (
     <Table columns="0.6fr 0.8fr 1.2fr 1.2fr 1fr 1fr;">
-      <Table.Header color="--color-blue-400">
+      <Table.Header color="--color-brand-200">
         <div></div>
         <div>Room</div>
         <div>Room Type</div>
@@ -19,7 +20,7 @@ function RoomTable() {
       </Table.Header>
 
       {isLoading ? (
-        <div>Loading...</div>
+        <Spinner />
       ) : (
         <Table.Body
           // data={cabins}

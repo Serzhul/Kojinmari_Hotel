@@ -10,17 +10,26 @@ import {
   ArrowRight,
   Bed,
   CurrencyWon,
+  Heart,
   Users,
   Writing,
 } from 'tabler-icons-react'
 import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from '../RoomRow'
+import { useRouter } from 'next/navigation'
 
 function RoomPage() {
+  const router = useRouter()
   const { isLoading, room } = useRoomDetail()
 
   if (isLoading) return <div>isLoading...</div>
 
   const roomDetail = room[0]
+
+  const addWishlist = () => {
+    // TODO: wishlist 등록하기
+    alert('로그인이 필요합니다.')
+    router.push('/login')
+  }
 
   return (
     <div className="flex">
@@ -75,7 +84,13 @@ function RoomPage() {
             {formatCurrency(roomDetail.regularPrice)}
           </div>
         </StyledPriceBox>
-        <ReservationButton>예약하러 가기</ReservationButton>
+        <div className="flex">
+          <WishlistButton onClick={addWishlist}>
+            <Heart className="mr-4" />
+            찜하기
+          </WishlistButton>
+          <ReservationButton>예약하러 가기</ReservationButton>
+        </div>
       </StyledDescription>
     </div>
   )
@@ -103,7 +118,7 @@ const StyledContent = styled.div`
 
 const StyledInfoBox = styled.div`
   padding: 8px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -121,13 +136,27 @@ const StyledPriceBox = styled.div`
   margin-bottom: 2.6rem;
 `
 
+const WishlistButton = styled.button`
+  width: 15rem;
+  padding: 8px;
+  margin-right: 1rem;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-red-400);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-red-400);
+  color: #fff;
+`
+
 const ReservationButton = styled.button`
   width: 100%;
   padding: 1.5rem;
   font-size: 3rem;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background-color: var(--color-blue-700);
-  border: 1px solid var(--color-blue-400);
+  border: 1px solid var(--color-brand-200);
   color: white;
 
   &:hover {

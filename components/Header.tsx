@@ -3,6 +3,17 @@ import styled from '@emotion/styled'
 import Navbar from './Navbar'
 import Logo from './Logo'
 
+function Header() {
+  return (
+    <StyledHeader>
+      <Logo />
+      <Navbar />
+    </StyledHeader>
+  )
+}
+
+export default Header
+
 const StyledHeader = styled.header`
   width: 100%;
   height: 80px;
@@ -17,13 +28,3 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   position: relative;
 `
-function Header() {
-  return (
-    <StyledHeader>
-      <Logo />
-      <Navbar />
-    </StyledHeader>
-  )
-}
-
-export default Header

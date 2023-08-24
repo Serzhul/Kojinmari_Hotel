@@ -1,5 +1,4 @@
 'use client'
-import Button from './Button'
 import { useMutation } from '@tanstack/react-query'
 
 function Uploader() {
@@ -23,9 +22,9 @@ function Uploader() {
     >
       <h3>SAMPLE DATA</h3>
 
-      <Button onClick={() => mutate()} disabled={false}>
+      <button onClick={() => mutate()} disabled={false}>
         Upload ALL
-      </Button>
+      </button>
     </div>
   )
 }
