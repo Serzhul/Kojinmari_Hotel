@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect } from 'react'
+import Uploader from '@components/Uploader'
 
 function Home() {
   gsap.registerPlugin(ScrollTrigger)
@@ -32,7 +33,7 @@ function Home() {
 
   return (
     <div>
-      {/* <Uploader /> */}
+      <Uploader />
       <main>
         {/* Section 1*/}
         <section

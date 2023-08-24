@@ -10,7 +10,7 @@ export function useRoomDetail() {
     data: room,
     error,
   } = useQuery({
-    queryKey: ['room'],
+    queryKey: [`room ${roomId}`],
     queryFn: () =>
       fetch(`/api/get-room?roomId=${roomId}`)
         .then((res) => res.json())

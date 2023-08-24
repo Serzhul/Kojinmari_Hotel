@@ -7,7 +7,7 @@ function RoomTable() {
   const { isLoading, rooms } = useRooms()
 
   return (
-    <Table columns="0.6fr 0.5fr 1.2fr 1.2fr 1fr 1fr;">
+    <Table columns="0.6fr 0.8fr 1.2fr 1.2fr 1fr 1fr;">
       <Table.Header color="--color-blue-400">
         <div></div>
         <div>Room</div>
