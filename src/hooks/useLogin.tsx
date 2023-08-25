@@ -10,16 +10,15 @@ export function useLogin() {
     { email: string; password: string },
     any
   >(
-    ({ email, password }) =>
-      fetch(`/api/signin`, {
+    async ({ email, password }) =>
+      fetch(`/auth/signin`, {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       })
         .then((res) => res.json())
         .then((data) => data.item),
-
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
         alert('로그인에 성공했습니다.')
         router.push('/')
       },

@@ -6,13 +6,6 @@ const nextConfig = {
       'hqmlcxohodigzkifhxpp.supabase.co',
     ],
   },
-  supabase: {
-    client: {
-      auth: {
-        persistSession: false, //or true
-      },
-    },
-  },
 }
 
 module.exports = nextConfig

@@ -2,8 +2,14 @@
 import styled from '@emotion/styled'
 import Logo from '@components/Logo'
 import LoginForm from './LoginForm'
+import { redirect } from 'next/navigation'
+import { useSession } from '@supabase/auth-helpers-react'
 
 function LoginPage() {
+  const session = useSession()
+
+  if (session) redirect('/')
+
   return (
     <LoginLayout>
       <Logo

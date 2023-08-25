@@ -1,7 +1,9 @@
-import supabase from 'constants/supabseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function signin(email: string, password: string) {
+  const supabase = createServerComponentClient({ cookies })
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -25,12 +27,13 @@ export async function POST(req: NextRequest) {
       },
     )
 
-  await signin(email, password)
+  const data = await signin(email, password)
 
   try {
     return NextResponse.json(
       {
         message: 'Login successed',
+        item: data,
       },
       {
         status: 200,

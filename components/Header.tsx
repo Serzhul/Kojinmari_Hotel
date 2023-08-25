@@ -6,7 +6,7 @@ import Logo from './Logo'
 function Header() {
   return (
     <StyledHeader>
-      <Logo />
+      <Logo link />
       <Navbar />
     </StyledHeader>
   )
