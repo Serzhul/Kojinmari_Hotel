@@ -4,33 +4,95 @@ import { formatCurrency } from '@/utils/helpers'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import Carousel from 'nuka-carousel'
-import React from 'react'
 import {
-  ArrowLeft,
-  ArrowRight,
-  Bed,
-  CurrencyWon,
-  Heart,
-  Users,
-  Writing,
-} from 'tabler-icons-react'
+  IconArrowLeft,
+  IconArrowRight,
+  IconBed,
+  IconCurrencyWon,
+  IconHeart,
+  IconHeartFilled,
+  IconUsers,
+} from '@tabler/icons-react'
 import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from '../RoomRow'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Spinner from '@components/Spinner'
+import { useSession } from '@supabase/auth-helpers-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useWishlists } from '@/hooks/useWishlist'
+import { WISHLIST_QUERY_KEY } from 'constants/queryKey'
+
+interface IWishlist {
+  userId: string
+  roomIds: string[]
+}
 
 function RoomPage() {
   const router = useRouter()
   const { isLoading, room } = useRoomDetail()
+  const session = useSession()
+  const params = useParams()
+  const { wishlists } = useWishlists()
+  const queryClient = useQueryClient()
+
+  const userId = session?.user?.email
+  const roomId = params['id']
+
+  const { mutate: updateWishlist, isLoading: isUpdatingWishlist } = useMutation<
+    unknown,
+    unknown,
+    any,
+    any
+  >(
+    ({ userId, roomId }) =>
+      fetch(`/api/update-wishlist`, {
+        method: 'POST',
+        body: JSON.stringify({
+          userId,
+          roomId,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+        }),
+    {
+      onMutate: async (status) => {
+        await queryClient.cancelQueries([WISHLIST_QUERY_KEY])
+
+        const previous = queryClient.getQueryData([WISHLIST_QUERY_KEY])
+
+        queryClient.setQueryData<IWishlist[]>([WISHLIST_QUERY_KEY], (old) => {
+          if (old) {
+            if (old?.includes(status.roomId))
+              return old.filter((id) => id !== status.roomId)
+            return [...old, status.roomId]
+          }
+        })
+
+        return { previous }
+      },
+      onSuccess: () => {
+        console.log('업데이트 성공')
+      },
+    },
+  )
 
   if (isLoading) return <Spinner />
 
   const roomDetail = room[0]
 
   const addWishlist = () => {
-    // TODO: wishlist 등록하기
-    alert('로그인이 필요합니다.')
-    router.push('/login')
+    if (!session) {
+      alert('로그인이 필요합니다.')
+      router.push('/login')
+      return
+    }
+
+    updateWishlist({ userId, roomId })
   }
+
+  const hasDiscount = roomDetail.discount !== 0
+  const isWished = wishlists ? wishlists.includes(roomId) : false
 
   return (
     <div className="flex">
@@ -40,11 +102,11 @@ function RoomPage() {
           nextButtonStyle: {
             borderRadius: '100%',
           },
-          nextButtonText: <ArrowRight />,
+          nextButtonText: <IconArrowRight />,
           prevButtonStyle: {
             borderRadius: '100%',
           },
-          prevButtonText: <ArrowLeft />,
+          prevButtonText: <IconArrowLeft />,
         }}
       >
         {roomDetail.image.split(',').map((image: string) => (
@@ -68,29 +130,70 @@ function RoomPage() {
         </StyledContent>
         <StyledInfoBox>
           <div className="flex flex-col items-center">
-            <Users />
+            <IconUsers />
             <div>최대 {roomDetail.maxCapacity}인</div>
           </div>
 
           <div className="flex flex-col items-center">
-            <Bed />
+            <IconBed />
             <div>{ROOM_TYPE_MAP[roomDetail.room_type as ROOM_TYPE_KEY]}</div>
           </div>
         </StyledInfoBox>
         <StyledPriceBox>
-          <span>가격</span>
+          <div>
+            <span>가격</span>
+            {hasDiscount && (
+              <StyledDiscountBox>
+                <span>할인</span>
+              </StyledDiscountBox>
+            )}
+          </div>
 
           <div className="flex items-center">
-            <CurrencyWon size={30} className="mr-8" />
-            {formatCurrency(roomDetail.regularPrice)}
+            <div className="flex-col">
+              <IconCurrencyWon size={30} className="mr-8" />
+            </div>
+            <div className="flex flex-col items-center">
+              <span className={hasDiscount ? 'line-through text-red-500' : ''}>
+                {formatCurrency(roomDetail.regularPrice)}
+              </span>
+              {hasDiscount && (
+                <div className="flex items-center">
+                  <div className="text-green-500 flex text-3xl">
+                    {formatCurrency(roomDetail.discount)}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </StyledPriceBox>
-        <div className="flex">
+
+        {hasDiscount && (
+          <StyledPriceBox>
+            <div>
+              <span>최종 가격</span>
+            </div>
+
+            <div className="flex items-center">
+              <IconCurrencyWon size={30} className="mr-8" />
+              <span>
+                {formatCurrency(roomDetail.regularPrice - roomDetail.discount)}
+              </span>
+            </div>
+          </StyledPriceBox>
+        )}
+        <div className="flex mt-16">
           <WishlistButton onClick={addWishlist}>
-            <Heart className="mr-4" />
-            찜하기
+            {isWished ? (
+              <IconHeartFilled className="mr-4" />
+            ) : (
+              <>
+                <IconHeart className="mr-4" />
+                <span>찜하기</span>
+              </>
+            )}
           </WishlistButton>
-          <ReservationButton>예약하러 가기</ReservationButton>
+          <ReservationButton>예약하기</ReservationButton>
         </div>
       </StyledDescription>
     </div>
@@ -134,7 +237,14 @@ const StyledPriceBox = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid var(--color-grey-400);
   font-size: 2.6rem;
-  margin-bottom: 2.6rem;
+`
+
+const StyledDiscountBox = styled.div`
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.5rem;
 `
 
 const WishlistButton = styled.button`
