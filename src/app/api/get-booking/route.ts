@@ -3,26 +3,24 @@ import supabase from 'constants/supabseClient'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-async function getWishlists(userId: string) {
+async function getBooking(userEmail: string) {
   try {
-    let { data: wishlists, error } = await supabase
-      .from('wishlists')
+    let { data: guest, error } = await supabase
+      .from('guests')
       .select('*')
-      .eq('userId', userId)
+      .eq('email', userEmail)
       .single()
 
-    const roomIds = wishlists ? wishlists.roomIds?.split(',') : []
+    const guestId = guest?.id
 
-    console.log(roomIds, '?????')
-
-    if (roomIds && roomIds.length > 0) {
-      let { data: wishlists, error } = await supabase
-        .from('rooms')
+    if (guestId) {
+      let { data: bookings } = await supabase
+        .from('bookings')
         .select('*')
-        .in('id', roomIds)
+        .eq('guestId', guestId)
 
-      console.log(wishlists)
-      return wishlists
+      console.log(bookings)
+      return bookings
     }
   } catch (error) {
     console.error(error)
@@ -31,6 +29,7 @@ async function getWishlists(userId: string) {
 
 export async function GET(req: NextRequest) {
   const supabase = createServerComponentClient({ cookies })
+
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -47,12 +46,12 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const wishlist = await getWishlists(user?.email ?? '')
+    const bookings = await getBooking(user?.email ?? '')
 
     return NextResponse.json(
       {
-        message: 'Wishlists loaded successfully',
-        items: wishlist,
+        message: 'Booking loaded successfully',
+        items: bookings,
       },
       {
         status: 200,
@@ -61,7 +60,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       {
-        message: 'Failed to load wishlists',
+        message: 'Failed to load booking',
       },
       {
         status: 400,

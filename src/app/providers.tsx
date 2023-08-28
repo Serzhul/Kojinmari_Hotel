@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import Header from '@components/Header'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -24,6 +25,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <Header />
         {children}
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </SessionContextProvider>
   )

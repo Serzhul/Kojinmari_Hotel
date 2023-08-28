@@ -1,3 +1,4 @@
+import { IRoom } from '@/app/rooms/RoomRow'
 import { useQuery } from '@tanstack/react-query'
 
 export function useRooms() {
@@ -5,7 +6,7 @@ export function useRooms() {
     isLoading,
     data: rooms,
     error,
-  } = useQuery({
+  } = useQuery<unknown, unknown, IRoom[], any>({
     queryKey: ['rooms'],
     queryFn: () =>
       fetch('/api/get-rooms')

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { WISHLIST_QUERY_KEY } from 'constants/queryKey'
+import { PERSONAL_WISHLIST_KEY } from 'constants/queryKey'
 
 export function useWishlists() {
   const {
@@ -7,9 +7,9 @@ export function useWishlists() {
     data: wishlists,
     error,
   } = useQuery({
-    queryKey: [WISHLIST_QUERY_KEY],
+    queryKey: [PERSONAL_WISHLIST_KEY],
     queryFn: () =>
-      fetch('/api/get-wishlists')
+      fetch('/api/get-wishlist')
         .then((res) => res.json())
         .then((data) => data.items),
   })

@@ -19,7 +19,7 @@ import Spinner from '@components/Spinner'
 import { useSession } from '@supabase/auth-helpers-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useWishlists } from '@/hooks/useWishlist'
-import { WISHLIST_QUERY_KEY } from 'constants/queryKey'
+import { PERSONAL_WISHLIST_KEY, WISHLISTS_QUERY_KEY } from 'constants/queryKey'
 
 interface IWishlist {
   userId: string
@@ -57,22 +57,27 @@ function RoomPage() {
         }),
     {
       onMutate: async (status) => {
-        await queryClient.cancelQueries([WISHLIST_QUERY_KEY])
+        await queryClient.cancelQueries([PERSONAL_WISHLIST_KEY])
 
-        const previous = queryClient.getQueryData([WISHLIST_QUERY_KEY])
+        const previous = queryClient.getQueryData([PERSONAL_WISHLIST_KEY])
 
-        queryClient.setQueryData<IWishlist[]>([WISHLIST_QUERY_KEY], (old) => {
-          if (old) {
-            if (old?.includes(status.roomId))
-              return old.filter((id) => id !== status.roomId)
-            return [...old, status.roomId]
-          }
-        })
+        queryClient.setQueryData<IWishlist[]>(
+          [PERSONAL_WISHLIST_KEY],
+          (old) => {
+            if (old) {
+              if (old?.includes(status.roomId))
+                return old.filter((id) => id !== status.roomId)
+              return [...old, status.roomId]
+            }
+          },
+        )
 
         return { previous }
       },
       onSuccess: () => {
-        console.log('업데이트 성공')
+        queryClient.invalidateQueries({
+          queryKey: [WISHLISTS_QUERY_KEY],
+        })
       },
     },
   )
@@ -193,7 +198,11 @@ function RoomPage() {
               </>
             )}
           </WishlistButton>
-          <ReservationButton>예약하기</ReservationButton>
+          <BookingButton
+            onClick={() => router.push(`/rooms/${roomId}/booking`)}
+          >
+            예약하기
+          </BookingButton>
         </div>
       </StyledDescription>
     </div>
@@ -261,7 +270,7 @@ const WishlistButton = styled.button`
   color: #fff;
 `
 
-const ReservationButton = styled.button`
+const BookingButton = styled.button`
   width: 100%;
   padding: 1.5rem;
   font-size: 3rem;

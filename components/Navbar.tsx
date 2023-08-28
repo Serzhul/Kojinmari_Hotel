@@ -14,12 +14,12 @@ function Navbar() {
       <Menu onClick={() => router.push('/rooms')}>
         <MenuItem>방 목록</MenuItem>
       </Menu>
-      <Menu onClick={() => router.push('/my')}>
+      <Menu onClick={() => router.push('/booking')}>
         <MenuItem>예약 확인</MenuItem>
       </Menu>
       {session ? (
         <>
-          <Menu>
+          <Menu onClick={() => router.push('/my')}>
             <MenuItem>
               <UserCircle />
               {session?.user.email}

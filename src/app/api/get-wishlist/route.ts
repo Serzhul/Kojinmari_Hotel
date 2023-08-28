@@ -3,26 +3,16 @@ import supabase from 'constants/supabseClient'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-async function getWishlists(userId: string) {
+async function getWishlist(userId: string) {
   try {
-    let { data: wishlists, error } = await supabase
+    let { data: wishlist, error } = await supabase
       .from('wishlists')
       .select('*')
       .eq('userId', userId)
       .single()
 
-    const roomIds = wishlists ? wishlists.roomIds?.split(',') : []
-
-    console.log(roomIds, '?????')
-
-    if (roomIds && roomIds.length > 0) {
-      let { data: wishlists, error } = await supabase
-        .from('rooms')
-        .select('*')
-        .in('id', roomIds)
-
-      console.log(wishlists)
-      return wishlists
+    if (wishlist) {
+      return wishlist?.roomIds?.split(',')
     }
   } catch (error) {
     console.error(error)
@@ -47,11 +37,11 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const wishlist = await getWishlists(user?.email ?? '')
+    const wishlist = await getWishlist(user?.email ?? '')
 
     return NextResponse.json(
       {
-        message: 'Wishlists loaded successfully',
+        message: 'wishlist loaded successfully',
         items: wishlist,
       },
       {
@@ -61,7 +51,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       {
-        message: 'Failed to load wishlists',
+        message: 'Failed to load wishlist',
       },
       {
         status: 400,

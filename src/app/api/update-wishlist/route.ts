@@ -2,26 +2,34 @@ import supabase from 'constants/supabseClient'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function updateWishlist(userId: string, roomId: string) {
-  let { data } = await supabase.from('wishlists').select('roomIds')
+  try {
+    let { data, error } = await supabase
+      .from('wishlists')
+      .select('roomIds')
+      .eq('userId', userId)
+      .single()
 
-  const originWishList =
-    data && data[0].roomIds !== null && data[0]?.roomIds !== ''
-      ? data[0]?.roomIds.split(',')
-      : []
+    const originWishList =
+      data && data?.roomIds !== null && data?.roomIds !== ''
+        ? data?.roomIds.split(',')
+        : []
 
-  const isWished = originWishList.includes(roomId)
+    const isWished = originWishList.includes(roomId)
 
-  const newWishlist = isWished
-    ? originWishList?.filter((id: string) => id !== roomId)
-    : [...originWishList, roomId]
+    const newWishlist = isWished
+      ? originWishList?.filter((id: string) => id !== roomId)
+      : [...originWishList, roomId]
 
-  const { data: wishlists } = await supabase
-    .from('wishlists')
-    .update({ roomIds: newWishlist.join(',') })
-    .eq('userId', userId)
-    .select()
+    const { data: wishlists } = await supabase
+      .from('wishlists')
+      .upsert({ userId, roomIds: newWishlist.join(',') })
+      .eq('userId', userId)
+      .select()
 
-  return wishlists
+    return wishlists
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export async function POST(req: NextRequest) {
