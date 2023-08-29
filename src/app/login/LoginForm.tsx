@@ -3,10 +3,7 @@ import { useState } from 'react'
 import Form from '@components/Form'
 import styled from '@emotion/styled'
 import FormRowVertical from '@components/FormRowVertical'
-import { useLogin } from '@/hooks/useLogin'
 import { SyntheticEvent } from 'react'
-import SpinnerMini from '@components/SpinnerMini'
-import { useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 function LoginForm() {
@@ -24,24 +21,6 @@ function LoginForm() {
       password,
     })
   }
-
-  // const handleSubmit = (e: SyntheticEvent) => {
-  //   e.preventDefault()
-  //   if (!email || !password) return
-
-  //   login(
-  //     { email, password },
-  //     {
-  //       onSuccess: () => {
-  //         router.refresh()
-  //       },
-  //       onSettled: () => {
-  //         setEmail('')
-  //         setPassword('')
-  //       },
-  //     },
-  //   )
-  // }
 
   async function loginWithGoogle() {
     await supabase.auth.signInWithOAuth({

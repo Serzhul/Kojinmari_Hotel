@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { IconToolsKitchen2 } from '@tabler/icons-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { BOOKING_QUERY_KEY } from 'constants/queryKey'
+import { ConfirmButton } from '@components/ConfirmButton'
 
 export interface IBooking {
   created_at: string
@@ -61,23 +62,25 @@ function BookingPage() {
   if (isLoadingBookings || isLoadingRooms) return <Spinner />
 
   const roomIds = bookings?.map((booking) => booking.roomId)
-  const bookedRoomsDetail = rooms?.filter((room) => roomIds?.includes(room.id))
+  const bookedRoomsDetail = rooms?.pages?.map((page) =>
+    page.filter((room) => roomIds?.includes(room.id)),
+  )
 
   return (
     <div>
       {bookings &&
         bookedRoomsDetail &&
         bookings.map((booking, idx) => {
-          const roomDetail = bookedRoomsDetail[idx]
+          // const roomDetail = bookedRoomsDetail[idx]
           return (
             <BookingItem key={booking.id}>
               <div>
                 <div className="flex items-center gap-8">
                   <BookingRoomTitle
                     className="text-3xl"
-                    onClick={() => router.push(`/rooms/${roomDetail.id}`)}
+                    // onClick={() => router.push(`/rooms/${roomDetail.id}`)}
                   >
-                    {roomDetail.name}
+                    {/* {roomDetail.name} */}
                   </BookingRoomTitle>
                   <Badge
                     size="xl"
@@ -143,8 +146,8 @@ function BookingPage() {
               </div>
 
               <BookingControl>
-                <BookingButton types="confirm">결제하기</BookingButton>
-                <BookingButton types="cancel">취소하기</BookingButton>
+                <ConfirmButton types="confirm">결제하기</ConfirmButton>
+                <ConfirmButton types="cancel">취소하기</ConfirmButton>
               </BookingControl>
             </BookingItem>
           )
@@ -189,32 +192,4 @@ const BookingRoomTitle = styled.h3`
 const BookingControl = styled.div`
   display: flex;
   gap: 2.6rem;
-`
-
-const BookingButton = styled.button`
-  width: 10rem;
-  display: flex;
-  justify-content: center;
-  padding: 1.4rem;
-  border: 1px solid
-    ${(props: { types: string }) =>
-      props.types === 'confirm'
-        ? 'var(--color-green-700)'
-        : 'var(--color-red-400)'};
-  border-radius: var(--border-radius-md);
-  font-size: 1.6rem;
-  background-color: ${(props: { types: string }) =>
-    props.types === 'confirm'
-      ? 'var(--color-green-700)'
-      : 'var(--color-red-400)'};
-  color: #fff;
-
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0 0 11px
-      ${(props: { types: string }) =>
-        props.types === 'confirm'
-          ? 'var(--color-green-700)'
-          : 'var(--color-red-400)'};
-  }
 `

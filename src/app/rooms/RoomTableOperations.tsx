@@ -1,56 +1,62 @@
-import Filter from '@components/Filter'
-import SortBy from '@components/SortBy'
-import TableOperations from '@components/TableOperations'
+import { Select } from '@mantine/core'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 
 function RoomTableOperations() {
+  const [sort, setSort] = useState<string | null>('type-asc')
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()!
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams)
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams],
+  )
+
   return (
-    <TableOperations>
-      <Filter
-        filterField="discount"
-        options={[
+    <div className="mt-8">
+      <Select
+        placeholder="정렬 기준"
+        value={sort}
+        onChange={(val) => {
+          router.push(pathname + '?' + createQueryString('sortBy', val ?? ''))
+          setSort(val)
+        }}
+        data={[
           {
-            value: 'all',
-            label: 'All',
+            value: 'roomType-asc',
+            label: '방타입순 정렬(오름차순)',
           },
           {
-            value: 'no-discount',
-            label: 'No discount',
-          },
-          {
-            value: 'with-discount',
-            label: 'With discount',
-          },
-        ]}
-      />
-      <SortBy
-        options={[
-          {
-            value: 'name-asc',
-            label: 'Sort by name (A-Z)',
-          },
-          {
-            value: 'name-desc',
-            label: 'Sort by name (Z-A)',
+            value: 'roomType-desc',
+            label: '방타입순 정렬(내림차순)',
           },
           {
             value: 'regularPrice-asc',
-            label: 'Sort by price (low first)',
+            label: '가격순 정렬(낮은 가격순)',
           },
           {
             value: 'regularPrice-desc',
-            label: 'Sort by price (high first)',
+            label: '가격순 정렬(높은 가격순)',
           },
           {
             value: 'maxCapacity-asc',
-            label: 'Sort by capacity (low first)',
+            label: '최대 인원 순(낮은 순)',
           },
           {
             value: 'maxCapacity-desc',
-            label: 'Sort by capacity (high first)',
+            label: '최대 인원 순(높은 순)',
           },
         ]}
+        size="xl"
       />
-    </TableOperations>
+    </div>
   )
 }
 

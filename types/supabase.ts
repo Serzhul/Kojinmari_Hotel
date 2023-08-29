@@ -79,21 +79,21 @@ export interface Database {
       guests: {
         Row: {
           email: string
-          first_name: string | null
+          firstName: string | null
           id: string
-          last_name: string | null
+          lastName: string | null
         }
         Insert: {
           email: string
-          first_name?: string | null
+          firstName?: string | null
           id: string
-          last_name?: string | null
+          lastName?: string | null
         }
         Update: {
           email?: string
-          first_name?: string | null
+          firstName?: string | null
           id?: string
-          last_name?: string | null
+          lastName?: string | null
         }
         Relationships: [
           {
@@ -115,7 +115,7 @@ export interface Database {
           maxCapacity: number | null
           name: string | null
           regularPrice: number | null
-          room_type: string | null
+          roomType: string | null
         }
         Insert: {
           booked?: boolean | null
@@ -127,7 +127,7 @@ export interface Database {
           maxCapacity?: number | null
           name?: string | null
           regularPrice?: number | null
-          room_type?: string | null
+          roomType?: string | null
         }
         Update: {
           booked?: boolean | null
@@ -139,28 +139,25 @@ export interface Database {
           maxCapacity?: number | null
           name?: string | null
           regularPrice?: number | null
-          room_type?: string | null
+          roomType?: string | null
         }
         Relationships: []
       }
       wishlists: {
         Row: {
           created_at: string
-          id: number
           roomIds: string | null
-          userId: string | null
+          userId: string
         }
         Insert: {
           created_at?: string
-          id?: number
           roomIds?: string | null
-          userId?: string | null
+          userId: string
         }
         Update: {
           created_at?: string
-          id?: number
           roomIds?: string | null
-          userId?: string | null
+          userId?: string
         }
         Relationships: []
       }

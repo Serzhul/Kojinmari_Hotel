@@ -13,7 +13,7 @@ import {
   IconHeartFilled,
   IconUsers,
 } from '@tabler/icons-react'
-import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from '../RoomRow'
+import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from '../RoomItem'
 import { useParams, useRouter } from 'next/navigation'
 import Spinner from '@components/Spinner'
 import { useSession } from '@supabase/auth-helpers-react'

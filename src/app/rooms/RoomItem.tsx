@@ -1,5 +1,4 @@
 import { formatCurrency } from '@/utils/helpers'
-import Table from '@components/Table'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -24,21 +23,13 @@ export const ROOM_TYPE_MAP = {
 
 export type ROOM_TYPE_KEY = keyof typeof ROOM_TYPE_MAP
 
-function RoomRow({ room }: { room: IRoom }) {
+function RoomItem({ room }: { room: IRoom }) {
   const router = useRouter()
-  const {
-    id,
-    name,
-    maxCapacity,
-    room_type,
-    regularPrice,
-    discount,
-    description,
-    image,
-  } = room
+  const { id, name, maxCapacity, room_type, regularPrice, discount, image } =
+    room
 
   return (
-    <Table.Row onClick={() => router.push(`/rooms/${id}`)}>
+    <RoomItemContainer onClick={() => router.push(`/rooms/${id}`)}>
       <Image
         width={640}
         height={400}
@@ -46,32 +37,48 @@ function RoomRow({ room }: { room: IRoom }) {
         alt={name}
         style={ImgStyle}
       />
-      <Room>{name}</Room>
+      <RoomInfo>{name}</RoomInfo>
       <div>{ROOM_TYPE_MAP[room_type as ROOM_TYPE_KEY]}</div>
       <div>최대 {maxCapacity} 인</div>
 
-      <Price>{formatCurrency(regularPrice)}</Price>
       {discount ? (
-        <Discount>{formatCurrency(discount)}</Discount>
+        <>
+          <Price className="line-through">{formatCurrency(regularPrice)}</Price>
+          <Discount>{formatCurrency(regularPrice - discount)} 원</Discount>
+        </>
       ) : (
-        <span>&mdash;</span>
+        <Price>{formatCurrency(regularPrice)} 원</Price>
       )}
-    </Table.Row>
+    </RoomItemContainer>
   )
 }
 
-export default RoomRow
+export default RoomItem
+
+const RoomItemContainer = styled.div`
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: var(--border-radius-md);
+  font-size: 1.6rem;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05, 1.05);
+  }
+`
 
 const ImgStyle = {
   display: 'block',
-  width: '8rem',
-  aspectRatio: '3 / 2',
+  width: '32.5rem',
+  aspectRatio: '2 / 1',
   objectPosition: 'center',
-  transform: 'scale(1.5) translateX(-7px)',
+  borderRadius: 'var(--border-radius-md)',
 }
 
-const Room = styled.div`
-  font-size: 1.6rem;
+const RoomInfo = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
 `
@@ -82,5 +89,5 @@ const Price = styled.div`
 
 const Discount = styled.div`
   font-weight: 500;
-  color: var(--color-green-700);
+  color: var(--color-red-400);
 `

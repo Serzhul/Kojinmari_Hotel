@@ -1,14 +1,68 @@
 import supabase from 'constants/supabseClient'
+import { PAGE_SIZE } from 'constants/variables'
 import { NextRequest, NextResponse } from 'next/server'
+import type { PostgrestFilterBuilder } from '@supabase/postgrest-js'
+import { Database } from 'types/supabase'
 
-async function getRooms() {
-  let { data: rooms, error } = await supabase.from('rooms').select('*')
+export async function getRooms({
+  filter,
+  sortBy,
+  page,
+}: {
+  filter: {
+    field: string
+    value: string
+  } | null
+  sortBy: {
+    field: string
+    direction: string
+  }
+  page: number
+}) {
+  try {
+    let query = supabase.from('rooms').select('*')
 
-  return rooms
+    if (filter !== null) {
+      query = query.eq(filter.field, filter.value)
+    }
+
+    if (sortBy) {
+      query = query.order(sortBy.field, {
+        ascending: sortBy.direction === 'asc',
+      })
+    }
+
+    if (page) {
+      const from = (page - 1) * PAGE_SIZE
+      const to = from + PAGE_SIZE - 1
+
+      console.log(from, to, page, 'from-to-page')
+
+      query = query.range(from, to)
+    }
+
+    const { data: rooms, error, count } = await query
+
+    // console.log(rooms)
+
+    return rooms
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export async function GET(req: NextRequest) {
-  const rooms = await getRooms()
+  let filter = req.nextUrl.searchParams.get('filter')
+  let sortBy = req.nextUrl.searchParams.get('sortBy')
+  const page = req.nextUrl.searchParams.get('page')
+
+  if (!filter || !sortBy || !page) return
+
+  const rooms = await getRooms({
+    filter: JSON.parse(filter ?? ''),
+    sortBy: JSON.parse(sortBy ?? ''),
+    page: Number(page),
+  })
 
   return NextResponse.json(
     {

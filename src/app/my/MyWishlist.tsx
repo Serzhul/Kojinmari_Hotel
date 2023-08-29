@@ -1,6 +1,6 @@
 import Spinner from '@components/Spinner'
 import { useQuery } from '@tanstack/react-query'
-import { IRoom } from '../rooms/RoomRow'
+import { IRoom } from '../rooms/RoomItem'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/navigation'
 import { WISHLISTS_QUERY_KEY } from 'constants/queryKey'

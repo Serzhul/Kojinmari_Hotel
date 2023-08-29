@@ -1,35 +1,42 @@
 'use client'
 import { useRooms } from '@/hooks/useRooms'
-import Table from '@components/Table'
-import RoomRow, { IRoom } from './RoomRow'
+import RoomItem from './RoomItem'
 import Spinner from '@components/Spinner'
+import Heading from '@components/Heading'
+import RoomTableOperations from './RoomTableOperations'
+import { useEffect, useRef } from 'react'
 
 function RoomTable() {
-  const { isLoading, rooms } = useRooms()
+  const { isLoading, fetchNextPage, rooms } = useRooms()
+
+  const scrollRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => fetchNextPage())
+    })
+    if (scrollRef.current) {
+      observer.observe(scrollRef.current)
+    }
+  }, [fetchNextPage, scrollRef])
 
   return (
-    <Table columns="0.6fr 0.8fr 1.2fr 1.2fr 1fr 1fr;">
-      <Table.Header color="--color-brand-200">
-        <div></div>
-        <div>Room</div>
-        <div>Room Type</div>
-        <div>Capacity</div>
-        <div>Price</div>
-        <div>Discount</div>
-        <div></div>
-      </Table.Header>
+    <div className="p-8">
+      <Heading as="h1">방 목록</Heading>
+      <RoomTableOperations />
 
       {isLoading ? (
         <Spinner />
       ) : (
-        <Table.Body
-          // data={cabins}
-          // data={filteredCabins}
-          data={rooms}
-          render={(room: IRoom) => <RoomRow room={room} key={room.id} />}
-        />
+        <div className="flex flex-wrap gap-8">
+          {rooms?.pages?.map(
+            (page) =>
+              page?.map((room) => <RoomItem room={room} key={room.id} />),
+          )}
+        </div>
       )}
-    </Table>
+      <span ref={scrollRef} />
+    </div>
   )
 }
 
