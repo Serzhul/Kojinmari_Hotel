@@ -39,9 +39,7 @@ async function getRooms({
       query = query.range(from, to)
     }
 
-    const { data: rooms, error, count } = await query
-
-    // console.log(rooms)
+    const { data: rooms } = await query
 
     return rooms
   } catch (error) {

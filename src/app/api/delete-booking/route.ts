@@ -3,10 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 async function deleteBooking(bookingId: string) {
   try {
-    const { error } = await supabase
-      .from('bookings')
-      .delete()
-      .eq('id', bookingId)
+    await supabase.from('bookings').delete().eq('id', bookingId)
   } catch (error) {
     console.error(error)
   }

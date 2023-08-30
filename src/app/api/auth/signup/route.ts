@@ -9,13 +9,13 @@ async function createUser({
   password,
 }: FormValues) {
   try {
-    let { data: user, error } = await supabase.auth.signUp({
+    let { data: user } = await supabase.auth.signUp({
       email,
       password,
     })
 
     if (user) {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('guests')
         .update({ firstName, lastName })
         .eq('email', email)

@@ -1,11 +1,11 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import supabase from 'constants/supabseClient'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 async function getBooking(userEmail: string) {
   try {
-    let { data: guest, error } = await supabase
+    let { data: guest } = await supabase
       .from('guests')
       .select('*')
       .eq('email', userEmail)
@@ -29,7 +29,7 @@ async function getBooking(userEmail: string) {
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const supabase = createServerComponentClient({ cookies })
 
   const {

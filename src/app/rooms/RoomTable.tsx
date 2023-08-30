@@ -13,7 +13,7 @@ function RoomTable() {
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e) => fetchNextPage())
+      entries.forEach(() => fetchNextPage())
     })
     if (scrollRef.current) {
       observer.observe(scrollRef.current)

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 async function updateWishlist(userId: string, roomId: string) {
   try {
-    let { data, error } = await supabase
+    let { data } = await supabase
       .from('wishlists')
       .select('roomIds')
       .eq('userId', userId)

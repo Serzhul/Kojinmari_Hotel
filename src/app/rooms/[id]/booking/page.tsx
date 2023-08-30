@@ -16,12 +16,7 @@ function RoomBookingPage() {
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const { mutate: addBooking, isLoading: isAddingBooking } = useMutation<
-    unknown,
-    unknown,
-    IBooking,
-    any
-  >(
+  const { mutate: addBooking } = useMutation<unknown, unknown, IBooking, any>(
     (item) =>
       fetch(`/api/add-booking`, {
         method: 'POST',

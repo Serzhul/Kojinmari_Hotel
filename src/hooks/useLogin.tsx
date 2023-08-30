@@ -18,7 +18,7 @@ export function useLogin() {
         .then((res) => res.json())
         .then((data) => data.item),
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         alert('로그인에 성공했습니다.')
         router.push('/')
       },

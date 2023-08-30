@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 async function updateBooking(bookingId: string, status: string) {
   try {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('bookings')
       .update({ status })
       .eq('id', bookingId)

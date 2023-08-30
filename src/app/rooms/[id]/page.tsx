@@ -36,12 +36,7 @@ function RoomPage() {
   const userId = session?.user?.email
   const roomId = params['id']
 
-  const { mutate: updateWishlist, isLoading: isUpdatingWishlist } = useMutation<
-    unknown,
-    unknown,
-    any,
-    any
-  >(
+  const { mutate: updateWishlist } = useMutation<unknown, unknown, any, any>(
     ({ userId, roomId }) =>
       fetch(`/api/update-wishlist`, {
         method: 'POST',

@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import { useRouter } from 'next/navigation'
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
@@ -7,7 +6,6 @@ const StyledHeaderMenu = styled.ul`
 `
 
 function HeaderMenu() {
-  const router = useRouter()
   return (
     <StyledHeaderMenu>
       <li>

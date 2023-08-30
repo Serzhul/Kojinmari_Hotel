@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 async function addBooking(booking: IBooking) {
   try {
-    const { data, error } = await supabase.from('bookings').insert([booking])
+    const { data } = await supabase.from('bookings').insert([booking])
 
     console.log(data)
     return data

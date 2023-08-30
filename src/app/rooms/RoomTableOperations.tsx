@@ -1,6 +1,6 @@
 import { Select } from '@mantine/core'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 function RoomTableOperations() {
   const [sort, setSort] = useState<string | null>('type-asc')

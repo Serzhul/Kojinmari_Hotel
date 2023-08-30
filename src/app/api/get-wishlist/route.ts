@@ -1,11 +1,11 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import supabase from 'constants/supabseClient'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 async function getWishlist(userId: string) {
   try {
-    let { data: wishlist, error } = await supabase
+    let { data: wishlist } = await supabase
       .from('wishlists')
       .select('*')
       .eq('userId', userId)
@@ -19,7 +19,7 @@ async function getWishlist(userId: string) {
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const supabase = createServerComponentClient({ cookies })
   const {
     data: { user },

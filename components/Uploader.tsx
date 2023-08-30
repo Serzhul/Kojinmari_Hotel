@@ -2,7 +2,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 function Uploader() {
-  const { mutate, isLoading } = useMutation(() =>
+  const { mutate } = useMutation(() =>
     fetch('/api/create-rooms')
       .then((res) => res.json())
       .then((data) => data),

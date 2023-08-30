@@ -2,7 +2,7 @@ import supabase from 'constants/supabseClient'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function getRoom(roomId: string) {
-  let { data: room, error } = await supabase
+  let { data: room } = await supabase
     .from('rooms')
     .select('*')
     .eq('id', roomId)
