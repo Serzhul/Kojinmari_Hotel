@@ -1,5 +1,7 @@
-import supabase from 'constants/supabseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+// import supabase from 'constants/supabseClient'
 import { PAGE_SIZE } from 'constants/variables'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function getRooms({
@@ -17,6 +19,7 @@ async function getRooms({
   }
   page: number
 }) {
+  const supabase = createServerComponentClient({ cookies })
   try {
     let query = supabase.from('rooms').select('*')
 
@@ -33,8 +36,6 @@ async function getRooms({
     if (page) {
       const from = (page - 1) * PAGE_SIZE
       const to = from + PAGE_SIZE - 1
-
-      console.log(from, to, page, 'from-to-page')
 
       query = query.range(from, to)
     }
@@ -54,19 +55,30 @@ export async function GET(req: NextRequest) {
 
   if (!filter || !sortBy || !page) return
 
-  const rooms = await getRooms({
-    filter: JSON.parse(filter ?? ''),
-    sortBy: JSON.parse(sortBy ?? ''),
-    page: Number(page),
-  })
+  try {
+    const rooms = await getRooms({
+      filter: JSON.parse(filter ?? ''),
+      sortBy: JSON.parse(sortBy ?? ''),
+      page: Number(page),
+    })
 
-  return NextResponse.json(
-    {
-      message: 'Rooms loaded successfully',
-      items: rooms,
-    },
-    {
-      status: 200,
-    },
-  )
+    return NextResponse.json(
+      {
+        message: 'Rooms loaded successfully',
+        items: rooms,
+      },
+      {
+        status: 200,
+      },
+    )
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: 'Failed to load rooms',
+      },
+      {
+        status: 400,
+      },
+    )
+  }
 }
