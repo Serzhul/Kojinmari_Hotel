@@ -1,5 +1,5 @@
-import { IRoom } from '@/app/rooms/RoomItem'
-import { InfiniteData, useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { IRoom } from 'constants/interfaces'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 
 export function useRooms() {

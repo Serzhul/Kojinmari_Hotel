@@ -1,10 +1,8 @@
 import supabase from 'constants/supabseClient'
 import { PAGE_SIZE } from 'constants/variables'
 import { NextRequest, NextResponse } from 'next/server'
-import type { PostgrestFilterBuilder } from '@supabase/postgrest-js'
-import { Database } from 'types/supabase'
 
-export async function getRooms({
+async function getRooms({
   filter,
   sortBy,
   page,

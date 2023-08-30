@@ -2,12 +2,12 @@ import { rooms } from '@/data/data-rooms'
 import supabase from 'constants/supabseClient'
 import { NextResponse } from 'next/server'
 
-export async function createRooms() {
+async function createRooms() {
   const { error } = await supabase.from('rooms').insert(rooms)
   if (error) console.log(error.message)
 }
 
-export async function deleteRooms() {
+async function deleteRooms() {
   const { error } = await supabase.from('rooms').delete().gt('id', 0)
   if (error) console.log(error.message)
 }

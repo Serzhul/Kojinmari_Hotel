@@ -2,11 +2,11 @@ import { IBooking } from '@/app/booking/page'
 import supabase from 'constants/supabseClient'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function addBooking(booking: IBooking) {
+async function addBooking(booking: IBooking) {
   try {
     const { data, error } = await supabase.from('bookings').insert([booking])
 
-    console.log(data, booking, '됐냐??')
+    console.log(data)
     return data
   } catch (error) {
     console.error(error)
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       {
-        message: 'AddBooking failed',
+        message: 'Booking failed',
       },
       {
         status: 400,
