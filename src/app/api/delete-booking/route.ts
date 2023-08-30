@@ -13,24 +13,23 @@ async function deleteBooking(bookingId: string) {
 }
 
 export async function POST(req: NextRequest) {
-  const bookingId = req.nextUrl.searchParams.get('id')
+  const { id: bookingId } = await req.json()
 
   if (!bookingId)
     return NextResponse.json(
       {
-        error: 'There is no roomId',
+        error: 'There is no bookingId',
       },
       {
         status: 400,
       },
     )
 
-  const room = await deleteBooking(bookingId)
+  await deleteBooking(bookingId)
 
   return NextResponse.json(
     {
       message: 'Booking deleted successfully',
-      item: room,
     },
     {
       status: 200,

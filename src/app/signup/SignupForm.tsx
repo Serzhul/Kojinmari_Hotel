@@ -61,7 +61,7 @@ function SignupForm() {
               type="text"
               id="lastName"
               {...register('lastName', {
-                required: 'This field is required',
+                required: '필수 입력 항목입니다.',
               })}
               disabled={isLoading}
             />
@@ -72,7 +72,7 @@ function SignupForm() {
               type="text"
               id="firstName"
               {...register('firstName', {
-                required: 'This field is required',
+                required: '필수 입력 항목입니다.',
               })}
               disabled={isLoading}
             />
@@ -119,7 +119,7 @@ function SignupForm() {
               type="password"
               id="passwordConfirm"
               {...register('passwordConfirm', {
-                required: 'This field is required',
+                required: '필수 입력 항목입니다.',
                 validate: (value) =>
                   value === getValues('password') ||
                   '비밀번호가 일치해야 합니다.',

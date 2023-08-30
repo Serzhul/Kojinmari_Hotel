@@ -2,30 +2,12 @@ import { formatCurrency } from '@/utils/helpers'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
-export interface IRoom {
-  id: number
-  image: string
-  name: string
-  room_type: string
-  maxCapacity: number
-  regularPrice: number
-  discount: number
-  description: string
-}
-
-export const ROOM_TYPE_MAP = {
-  single: '싱글룸 (싱글 침대 1개)',
-  double: '더블룸 (더블 침대 1개)',
-  twin: '트윈룸 (싱글 침대 2개)',
-  triple: '트리플룸 (더블 침대 1개, 간이 침대 1개)',
-}
-
-export type ROOM_TYPE_KEY = keyof typeof ROOM_TYPE_MAP
+import { IRoom } from 'constants/interfaces'
+import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from 'constants/ItemMaps'
 
 function RoomItem({ room }: { room: IRoom }) {
   const router = useRouter()
-  const { id, name, maxCapacity, room_type, regularPrice, discount, image } =
+  const { id, name, maxCapacity, roomType, regularPrice, discount, image } =
     room
 
   return (
@@ -38,7 +20,7 @@ function RoomItem({ room }: { room: IRoom }) {
         style={ImgStyle}
       />
       <RoomInfo>{name}</RoomInfo>
-      <div>{ROOM_TYPE_MAP[room_type as ROOM_TYPE_KEY]}</div>
+      <div>{ROOM_TYPE_MAP[roomType as ROOM_TYPE_KEY]}</div>
       <div>최대 {maxCapacity} 인</div>
 
       {discount ? (

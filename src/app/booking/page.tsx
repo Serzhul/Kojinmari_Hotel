@@ -5,21 +5,22 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { format } from 'date-fns'
 import { formatCurrency } from '@/utils/helpers'
-import { Badge, rem } from '@mantine/core'
+import { Badge } from '@mantine/core'
 import { useRooms } from '@/hooks/useRooms'
 import { useRouter } from 'next/navigation'
 import { IconToolsKitchen2 } from '@tabler/icons-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { BOOKING_QUERY_KEY } from 'constants/queryKey'
 import { ConfirmButton } from '@components/ConfirmButton'
+import { IRoom } from 'constants/interfaces'
+import EmptyPage from '@components/EmptyPage'
 
 export interface IBooking {
-  created_at: string
   endDate: string | null
   extrasPrice: number | null
   guestId: string | null
   hasBreakfast: boolean | null
-  id: number
+  id: number | undefined
   isPaid: boolean | null
   numGuests: number | null
   numNights: number | null
@@ -29,6 +30,7 @@ export interface IBooking {
   startDate: string | null
   status: string | null
   totalPrice: number | null
+  rooms?: IRoom
 }
 
 function BookingPage() {
@@ -37,17 +39,30 @@ function BookingPage() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const { mutate: deleteBooking, isLoading: isUpdatingWishlist } = useMutation<
-    unknown,
-    unknown,
-    any,
-    any
-  >(
+  const { mutate: deleteBooking } = useMutation<unknown, unknown, any, any>(
     (id) =>
-      fetch(`/api/deleteBooking`, {
+      fetch(`/api/delete-booking`, {
         method: 'POST',
         body: JSON.stringify({
           id,
+        }),
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [BOOKING_QUERY_KEY],
+        })
+      },
+    },
+  )
+
+  const { mutate: updateBooking } = useMutation<unknown, unknown, any, any>(
+    (id) =>
+      fetch(`/api/update-booking`, {
+        method: 'POST',
+        body: JSON.stringify({
+          bookingId: id,
+          status: 'confirmed',
         }),
       }),
     {
@@ -68,90 +83,101 @@ function BookingPage() {
 
   return (
     <div>
-      {bookings &&
-        bookedRoomsDetail &&
-        bookings.map((booking, idx) => {
-          // const roomDetail = bookedRoomsDetail[idx]
-          return (
-            <BookingItem key={booking.id}>
-              <div>
-                <div className="flex items-center gap-8">
-                  <BookingRoomTitle
-                    className="text-3xl"
-                    // onClick={() => router.push(`/rooms/${roomDetail.id}`)}
-                  >
-                    {/* {roomDetail.name} */}
-                  </BookingRoomTitle>
-                  <Badge
-                    size="xl"
-                    color={booking.status === 'unconfirmed' ? 'red' : 'teal'}
-                  >
-                    {booking.status === 'unconfirmed' && '결제 대기중'}
-                    {booking.status === 'confirmed' && '예약 확정'}
-                  </Badge>
-                </div>
+      {bookings && bookedRoomsDetail && bookings.length > 0 ? (
+        bookings.map((booking) => (
+          <BookingItem key={booking.id}>
+            <div>
+              <div className="flex items-center gap-8">
+                <BookingRoomTitle
+                  className="text-3xl"
+                  onClick={() => router.push(`/rooms/${booking.roomId}`)}
+                >
+                  {booking.rooms?.name}
+                </BookingRoomTitle>
+                <Badge
+                  size="xl"
+                  color={booking.status === 'unconfirmed' ? 'red' : 'teal'}
+                >
+                  {booking.status === 'unconfirmed' && '결제 대기중'}
+                  {booking.status === 'confirmed' && '예약 확정'}
+                </Badge>
               </div>
+            </div>
 
-              <div className="flex gap-8">
-                <BookingDetailTitle>
-                  <div className="text-2xl">숙박 일정</div>
-                  <div className="text-2xl">숙박 일수</div>
-                  <div className="text-2xl">숙박 최대 인원</div>
-                  <div className="text-2xl">방 예약 가격</div>
-                  {booking.hasBreakfast && (
-                    <div className="text-2xl">기타 가격</div>
-                  )}
-                  <div className="text-3xl font-semibold">최종 예약 가격</div>
-                </BookingDetailTitle>
+            <div className="flex gap-8">
+              <BookingDetailTitle>
+                <div className="text-2xl">숙박 일정</div>
+                <div className="text-2xl">숙박 일수</div>
+                <div className="text-2xl">숙박 최대 인원</div>
+                <div className="text-2xl">방 예약 가격</div>
+                {booking.hasBreakfast && (
+                  <div className="text-2xl">기타 가격</div>
+                )}
+                <div className="text-3xl font-semibold">최종 예약 가격</div>
+              </BookingDetailTitle>
 
-                <BookingDetailData>
+              <BookingDetailData>
+                <div className="text-2xl">
+                  {booking?.startDate &&
+                    format(new Date(booking.startDate), 'yyyy/mm/dd')}{' '}
+                  ~{' '}
+                  {booking.endDate &&
+                    format(new Date(booking.endDate), 'yyyy/mm/dd')}
+                </div>
+                <div className="flex items-center">
+                  <div className="text-2xl">{booking.numNights}일</div>
+                </div>
+                <div className="flex items-center">
+                  <div className="text-2xl">{booking.numGuests}명</div>
+                </div>
+                <div className="flex items-center">
                   <div className="text-2xl">
-                    {booking?.startDate &&
-                      format(new Date(booking.startDate), 'yyyy/mm/dd')}{' '}
-                    ~{' '}
-                    {booking.endDate &&
-                      format(new Date(booking.endDate), 'yyyy/mm/dd')}
+                    {booking.roomPrice && formatCurrency(booking.roomPrice)}
                   </div>
-                  <div className="flex items-center">
-                    <div className="text-2xl">{booking.numNights}일</div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="text-2xl">{booking.numGuests}명</div>
-                  </div>
+                </div>
+                {booking.hasBreakfast && (
                   <div className="flex items-center">
                     <div className="text-2xl">
-                      {booking.roomPrice && formatCurrency(booking.roomPrice)}
+                      {booking.extrasPrice &&
+                        formatCurrency(booking.extrasPrice)}
                     </div>
+                    <IconToolsKitchen2
+                      style={{
+                        marginLeft: '2rem',
+                        color: 'var(--color-brand-500)',
+                      }}
+                    />
                   </div>
-                  {booking.hasBreakfast && (
-                    <div className="flex items-center">
-                      <div className="text-2xl">
-                        {booking.extrasPrice &&
-                          formatCurrency(booking.extrasPrice)}
-                      </div>
-                      <IconToolsKitchen2
-                        style={{
-                          marginLeft: '2rem',
-                          color: 'var(--color-brand-500)',
-                        }}
-                      />
-                    </div>
-                  )}
-                  <div className="flex items-center">
-                    <div className="text-3xl font-bold">
-                      {booking.totalPrice && formatCurrency(booking.totalPrice)}
-                    </div>
+                )}
+                <div className="flex items-center">
+                  <div className="text-3xl font-bold">
+                    {booking.totalPrice && formatCurrency(booking.totalPrice)}
                   </div>
-                </BookingDetailData>
-              </div>
+                </div>
+              </BookingDetailData>
+            </div>
 
-              <BookingControl>
-                <ConfirmButton types="confirm">결제하기</ConfirmButton>
-                <ConfirmButton types="cancel">취소하기</ConfirmButton>
-              </BookingControl>
-            </BookingItem>
-          )
-        })}
+            <BookingControl>
+              {booking.status === 'unconfirmed' && (
+                <ConfirmButton
+                  types="confirm"
+                  onClick={() => updateBooking(booking.id)}
+                >
+                  결제하기
+                </ConfirmButton>
+              )}
+              <ConfirmButton
+                types="cancel"
+                onClick={() => deleteBooking(booking.id)}
+              >
+                취소하기
+              </ConfirmButton>
+            </BookingControl>
+          </BookingItem>
+        ))
+      ) : (
+        <EmptyPage>예약 내용이 없습니다...</EmptyPage>
+      )}
     </div>
   )
 }

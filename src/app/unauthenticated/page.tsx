@@ -8,7 +8,7 @@ async function Unauthenticated() {
     data: { session },
   } = await supabase.auth.getSession()
 
-  if (session) {
+  if (!session) {
     redirect('/')
   }
 

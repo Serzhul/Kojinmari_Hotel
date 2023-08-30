@@ -32,9 +32,14 @@ function Navbar() {
           </Menu>
         </>
       ) : (
-        <Menu onClick={() => router.push('/login')}>
-          <MenuItem>로그인</MenuItem>
-        </Menu>
+        <>
+          <Menu onClick={() => router.push('/login')}>
+            <MenuItem>로그인</MenuItem>
+          </Menu>
+          <Menu onClick={() => router.push('/signup')}>
+            <MenuItem>회원가입</MenuItem>
+          </Menu>
+        </>
       )}
     </div>
   )

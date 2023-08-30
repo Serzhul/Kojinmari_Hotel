@@ -6,7 +6,9 @@ async function getRoom(roomId: string) {
     .from('rooms')
     .select('*')
     .eq('id', roomId)
+    .single()
 
+  console.log(room)
   return room
 }
 

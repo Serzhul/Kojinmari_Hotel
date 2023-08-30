@@ -33,7 +33,7 @@ function Home() {
 
   return (
     <div>
-      {/* <Uploader /> */}
+      <Uploader />
       <main>
         {/* Section 1*/}
         <section

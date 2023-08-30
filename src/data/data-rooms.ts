@@ -5,9 +5,9 @@ const imageUrl = `${supabaseUrl}/storage/v1/object/public/room-images/`
 export const rooms = [
   {
     name: '수페리얼 싱글룸 1',
-    room_type: 'single',
+    roomType: 'single',
     maxCapacity: 1,
-    regularPrice: 150,
+    regularPrice: 150000,
     discount: 0,
     image: [
       imageUrl + 'Superior-Single1.jpeg',
@@ -19,10 +19,10 @@ export const rooms = [
   },
   {
     name: '수페리얼 싱글룸 2',
-    room_type: 'single',
+    roomType: 'single',
     maxCapacity: 1,
-    regularPrice: 150,
-    discount: 25,
+    regularPrice: 150000,
+    discount: 25000,
     image: [
       imageUrl + 'Superior-Single1.jpeg',
       imageUrl + 'Superior-Single2.jpeg',
@@ -33,9 +33,9 @@ export const rooms = [
   },
   {
     name: '수페리얼 싱글룸 3',
-    room_type: 'single',
+    roomType: 'single',
     maxCapacity: 1,
-    regularPrice: 150,
+    regularPrice: 150000,
     discount: 0,
     image: [
       imageUrl + 'Superior-Single1.jpeg',
@@ -47,10 +47,10 @@ export const rooms = [
   },
   {
     name: '프리미어 더블룸 1',
-    room_type: 'double',
+    roomType: 'double',
     maxCapacity: 2,
-    regularPrice: 250,
-    discount: 50,
+    regularPrice: 250000,
+    discount: 50000,
     image: [
       imageUrl + 'Premier-Double1.jpeg',
       imageUrl + 'Premier-Double2.jpeg',
@@ -61,9 +61,9 @@ export const rooms = [
   },
   {
     name: '프리미어 더블룸 2',
-    room_type: 'double',
+    roomType: 'double',
     maxCapacity: 2,
-    regularPrice: 250,
+    regularPrice: 250000,
     discount: 0,
     image: [
       imageUrl + 'Premier-Double1.jpeg',
@@ -75,10 +75,10 @@ export const rooms = [
   },
   {
     name: '프리미어 더블룸 3',
-    room_type: 'double',
+    roomType: 'double',
     maxCapacity: 2,
-    regularPrice: 250,
-    discount: 100,
+    regularPrice: 250000,
+    discount: 100000,
     image: [
       imageUrl + 'Premier-Double1.jpeg',
       imageUrl + 'Premier-Double2.jpeg',
@@ -89,10 +89,10 @@ export const rooms = [
   },
   {
     name: '프리미어 더블룸 4',
-    room_type: 'double',
+    roomType: 'double',
     maxCapacity: 2,
-    regularPrice: 300,
-    discount: 100,
+    regularPrice: 300000,
+    discount: 100000,
     image: [
       imageUrl + 'Premier-Double1.jpeg',
       imageUrl + 'Premier-Double2.jpeg',
@@ -103,9 +103,9 @@ export const rooms = [
   },
   {
     name: '레지던스 트윈룸 1',
-    room_type: 'twin',
+    roomType: 'twin',
     maxCapacity: 3,
-    regularPrice: 400,
+    regularPrice: 400000,
     discount: 0,
     image: [
       imageUrl + 'Residence-Twin1.jpeg',
@@ -117,9 +117,9 @@ export const rooms = [
   },
   {
     name: '레지던스 트윈룸 2',
-    room_type: 'twin',
+    roomType: 'twin',
     maxCapacity: 3,
-    regularPrice: 400,
+    regularPrice: 400000,
     discount: 0,
     image: [
       imageUrl + 'Residence-Twin1.jpeg',
@@ -131,9 +131,9 @@ export const rooms = [
   },
   {
     name: '레지던스 트윈룸 3',
-    room_type: 'twin',
+    roomType: 'twin',
     maxCapacity: 3,
-    regularPrice: 450,
+    regularPrice: 450000,
     discount: 0,
     image: [
       imageUrl + 'Residence-Twin1.jpeg',
@@ -145,9 +145,9 @@ export const rooms = [
   },
   {
     name: '매그니픽 트리플룸-1',
-    room_type: 'triple',
+    roomType: 'triple',
     maxCapacity: 4,
-    regularPrice: 500,
+    regularPrice: 500000,
     discount: 0,
     image: [
       imageUrl + 'Magnific-Triple1.jpeg',
@@ -159,9 +159,9 @@ export const rooms = [
   },
   {
     name: '매그니픽 트리플룸-2',
-    room_type: 'triple',
+    roomType: 'triple',
     maxCapacity: 4,
-    regularPrice: 500,
+    regularPrice: 500000,
     discount: 0,
     image: [
       imageUrl + 'Magnific-Triple1.jpeg',

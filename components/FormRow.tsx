@@ -6,8 +6,7 @@ const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-
+  gap: 2rem;
   padding: 1.2rem 0;
 
   &:first-child {
@@ -29,11 +28,36 @@ const StyledFormRow = styled.div`
   }
 `
 
+const StyledErrorRow = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 24rem 1fr 1.2fr;
+  gap: 2rem;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  &:has(button) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+  }
+`
+
 const Label = styled.label`
   font-weight: 500;
 `
 
 const Error = styled.span`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 24rem 1fr 1.2fr;
+  gap: 2rem;
   font-size: 1.4rem;
   color: var(--color-red-700);
 `
@@ -52,11 +76,16 @@ function FormRow({
   children: ReactElement
 }) {
   return (
-    <StyledFormRow>
-      {label && <Label htmlFor={children?.props?.id}>{label}</Label>}
-      {children}
-      {error && <Error>{error as string}</Error>}
-    </StyledFormRow>
+    <>
+      <StyledFormRow>
+        {label && <Label htmlFor={children?.props?.id}>{label}</Label>}
+        {children}
+      </StyledFormRow>
+      <StyledErrorRow>
+        <div />
+        {error && <Error>{error as string}</Error>}
+      </StyledErrorRow>
+    </>
   )
 }
 

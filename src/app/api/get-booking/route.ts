@@ -16,10 +16,12 @@ async function getBooking(userEmail: string) {
     if (guestId) {
       let { data: bookings } = await supabase
         .from('bookings')
-        .select('*')
+        .select(
+          `id, startDate, endDate, numNights, numGuests, roomPrice, extrasPrice, totalPrice, status, hasBreakfast, isPaid, observations, roomId, rooms(name)`,
+        )
         .eq('guestId', guestId)
 
-      console.log(bookings)
+      console.log(bookings, 'bookings!!')
       return bookings
     }
   } catch (error) {
