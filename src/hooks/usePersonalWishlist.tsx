@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { PERSONAL_WISHLIST_KEY } from 'constants/queryKey'
 
-export function useWishlists() {
+export function usePersonalWishlist() {
   const {
     isLoading,
-    data: wishlists,
+    data: personalWishlist,
     error,
   } = useQuery({
     queryKey: [PERSONAL_WISHLIST_KEY],
@@ -14,5 +14,5 @@ export function useWishlists() {
         .then((data) => data.items),
   })
 
-  return { isLoading, wishlists, error }
+  return { isLoading, personalWishlist, error }
 }

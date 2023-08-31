@@ -17,9 +17,10 @@ import { useParams, useRouter } from 'next/navigation'
 import Spinner from '@components/Spinner'
 import { useSession } from '@supabase/auth-helpers-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useWishlists } from '@/hooks/useWishlist'
+import { usePersonalWishlist } from '@/hooks/usePersonalWishlist'
 import { PERSONAL_WISHLIST_KEY, WISHLISTS_QUERY_KEY } from 'constants/queryKey'
 import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from 'constants/ItemMaps'
+import SpinnerMini from '@components/SpinnerMini'
 interface IWishlist {
   userId: string
   roomIds: string[]
@@ -30,13 +31,18 @@ function RoomPage() {
   const { isLoading, room: roomDetail } = useRoomDetail()
   const session = useSession()
   const params = useParams()
-  const { wishlists } = useWishlists()
+  const { personalWishlist } = usePersonalWishlist()
   const queryClient = useQueryClient()
 
   const userId = session?.user?.email
   const roomId = params['id']
 
-  const { mutate: updateWishlist } = useMutation<unknown, unknown, any, any>(
+  const { mutate: updateWishlist, isLoading: isUpdatingWishlist } = useMutation<
+    unknown,
+    unknown,
+    any,
+    any
+  >(
     ({ userId, roomId }) =>
       fetch(`/api/update-wishlist`, {
         method: 'POST',
@@ -46,9 +52,7 @@ function RoomPage() {
         }),
       })
         .then((res) => res.json())
-        .then((data) => {
-          console.log(data)
-        }),
+        .then((data) => console.log(data)),
     {
       onMutate: async (status) => {
         await queryClient.cancelQueries([PERSONAL_WISHLIST_KEY])
@@ -70,7 +74,7 @@ function RoomPage() {
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: [WISHLISTS_QUERY_KEY],
+          queryKey: [PERSONAL_WISHLIST_KEY, WISHLISTS_QUERY_KEY],
         })
       },
     },
@@ -89,7 +93,7 @@ function RoomPage() {
   }
 
   const hasDiscount = roomDetail?.discount !== 0
-  const isWished = wishlists ? wishlists.includes(roomId) : false
+  const isWished = personalWishlist ? personalWishlist.includes(roomId) : false
 
   return (
     <div className="flex">
@@ -188,16 +192,26 @@ function RoomPage() {
               </StyledPriceBox>
             )}
             <div className="flex mt-16">
-              <WishlistButton onClick={addWishlist}>
-                {isWished ? (
-                  <IconHeartFilled className="mr-4" />
+              <WishlistButton
+                onClick={addWishlist}
+                disabled={isUpdatingWishlist}
+              >
+                {isUpdatingWishlist ? (
+                  <SpinnerMini />
                 ) : (
                   <>
-                    <IconHeart className="mr-4" />
-                    <span>찜하기</span>
+                    {isWished ? (
+                      <IconHeartFilled className="mr-4" />
+                    ) : (
+                      <>
+                        <IconHeart className="mr-4" />
+                        <span>찜하기</span>
+                      </>
+                    )}
                   </>
                 )}
               </WishlistButton>
+
               <BookingButton
                 onClick={() => router.push(`/rooms/${roomId}/booking`)}
               >

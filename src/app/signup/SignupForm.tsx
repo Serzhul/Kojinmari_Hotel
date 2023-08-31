@@ -30,7 +30,6 @@ function SignupForm() {
     email,
     password,
   }) => {
-    console.log('실행되면 안됨')
     signup(
       {
         firstName,

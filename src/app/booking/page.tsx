@@ -7,13 +7,14 @@ import { format } from 'date-fns'
 import { formatCurrency } from '@/utils/helpers'
 import { Badge } from '@mantine/core'
 import { useRooms } from '@/hooks/useRooms'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { IconToolsKitchen2 } from '@tabler/icons-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { BOOKING_QUERY_KEY } from 'constants/queryKey'
 import { ConfirmButton } from '@components/ConfirmButton'
 import { IRoom } from 'constants/interfaces'
 import EmptyPage from '@components/EmptyPage'
+import { useSession } from '@supabase/auth-helpers-react'
 
 export interface IBooking {
   endDate: string | null
@@ -34,6 +35,12 @@ export interface IBooking {
 }
 
 function BookingPage() {
+  const session = useSession()
+
+  if (!session) {
+    redirect('/unauthenticated')
+  }
+
   const { bookings, isLoading: isLoadingBookings } = useBookings()
   const { rooms, isLoading: isLoadingRooms } = useRooms()
   const router = useRouter()

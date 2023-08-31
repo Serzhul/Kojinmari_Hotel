@@ -1,6 +1,4 @@
-import { supabaseUrl } from 'constants/supabseClient'
-
-const imageUrl = `${supabaseUrl}/storage/v1/object/public/room-images/`
+const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/room-images/`
 
 export const rooms = [
   {

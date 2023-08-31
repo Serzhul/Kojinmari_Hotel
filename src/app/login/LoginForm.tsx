@@ -1,25 +1,32 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Form from '@components/Form'
 import styled from '@emotion/styled'
 import FormRowVertical from '@components/FormRowVertical'
 import { SyntheticEvent } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { AuthError } from '@supabase/supabase-js'
 
 function LoginForm() {
+  const [loginError, setLoginError] = useState<AuthError>()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  // const { login, isLoading } = useLogin()
 
   const supabase = createClientComponentClient()
 
   const handleSignIn = async (e: SyntheticEvent) => {
     e.preventDefault()
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) {
+        setLoginError(error)
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   async function loginWithGoogle() {
@@ -28,13 +35,16 @@ function LoginForm() {
     })
   }
 
+  useEffect(() => {
+    console.log(loginError)
+  }, [loginError])
+
   return (
     <Form onSubmit={handleSignIn}>
       <FormRowVertical label="이메일">
         <Input
           type="email"
           id="email"
-          // This makes this form better for password managers
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -47,16 +57,16 @@ function LoginForm() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          // disabled={isLoading}
         />
       </FormRowVertical>
+      {loginError && (
+        <div className="text-red-500">
+          아이디 또는 비밀번호가 잘못되었습니다.
+        </div>
+      )}
       <FormRowVertical>
         <div>
           <LoginButton>로그인</LoginButton>
-          {/* <LoginButton disabled={isLoading}>
-            {isLoading ? <SpinnerMini /> : '로그인'}
-          </LoginButton> */}
-
           <GoogleLoginButton onClick={loginWithGoogle}>
             Google
           </GoogleLoginButton>
