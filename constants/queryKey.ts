@@ -1,3 +1,2 @@
-export const WISHLISTS_QUERY_KEY = '/api/get-wishlists'
-export const PERSONAL_WISHLIST_KEY = '/api/get-wishlist'
+export const WISHLIST_QUERY_KEY = 'wishlist'
 export const BOOKING_QUERY_KEY = '/api/get-booking'
