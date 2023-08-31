@@ -1,5 +1,5 @@
 import { Logout as LogoutIcon } from 'tabler-icons-react'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useState } from 'react'
 import SpinnerMini from './SpinnerMini'
