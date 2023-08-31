@@ -34,11 +34,11 @@ function Home() {
     <MainContainer>
       {/* Section 1*/}
       <SectionContainer1>
-        <HotelImageWrapper1>
+        <HotelImageWrapper1 className="section-image">
           <Image
-            className="section-image"
             src="/hotel_room_main.jpeg"
             layout="fill"
+            objectFit="cover"
             alt="Hotel Room Main"
           />
         </HotelImageWrapper1>
@@ -84,9 +84,6 @@ function Home() {
             alt="Hotel Room Main"
             layout="fill"
             objectFit="cover"
-            style={{
-              borderRadius: '8px',
-            }}
           />
         </HotelImageWrapper2>
       </SectionContainer2>
@@ -147,27 +144,26 @@ const SectionContainer1 = styled.section`
   position: relative;
 
   @media (max-width: 1000px) {
-    width: 100%;
-    height: 30vh;
+    height: 90vh;
   }
   @media (max-width: 700px) {
+    height: 80vh;
   }
 `
 
 const SectionContainer2 = styled.section`
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   background-image: url('/bg-black.jpeg');
   position: relative;
   z-index: 3;
 
   @media (max-width: 1000px) {
-    width: 100%;
-    height: 30vh;
+    height: 90vh;
   }
 
   @media (max-width: 700px) {
-    height: 20vh;
+    height: 70vh;
   }
 `
 
@@ -182,43 +178,48 @@ const SectionContainer3 = styled.section`
   position: relative;
 
   @media (max-width: 1000px) {
-    width: 100%;
-    height: 30vh;
-  }
-
-  @media (max-width: 700px) {
-    height: 20vh;
+    height: 40vh;
   }
 `
 
 const HotelImageWrapper1 = styled.div`
   position: absolute;
+  max-width: 98rem;
   width: 40%;
   height: 100%;
   border-radius: 8px;
 
+  @media (max-width: 1000px) {
+    top: 36rem;
+    left: 12rem;
+    width: 70%;
+    height: 60%;
+  }
+
   @media (max-width: 700px) {
-    display: none;
+    top: 25rem;
+    left: 6rem;
+    width: 70%;
   }
 `
 
 const TextImageWrapper1 = styled.div`
   position: absolute;
-  width: 50%;
+  max-width: 98rem;
   height: 80%;
   top: 25rem;
   left: 60rem;
 
   @media (max-width: 1000px) {
-    width: 30%;
-    top: 15rem;
-    left: 40rem;
+    width: 70%;
+    top: 9rem;
+    left: 18rem;
   }
 
   @media (max-width: 700px) {
-    width: 50%;
-    top: 12rem;
-    left: 10rem;
+    width: 70%;
+    top: 8rem;
+    left: 8rem;
   }
 `
 
@@ -228,16 +229,15 @@ const TextImageWrapper2 = styled.div`
   left: 12rem;
 
   @media (max-width: 1000px) {
-    width: 30%;
-    height: 50%;
-    top: 8rem;
-    left: 6rem;
+    width: 60%;
+    top: 5rem;
+    left: 18rem;
   }
 
   @media (max-width: 700px) {
-    width: 50%;
+    width: 70%;
     top: 3rem;
-    left: 10rem;
+    left: 8rem;
   }
 `
 
@@ -249,14 +249,17 @@ const HotelImageWrapper2 = styled.div`
   right: 0.5rem;
 
   @media (max-width: 1000px) {
-    width: 50%;
-    height: 50%;
-    top: 6rem;
-    right: 4rem;
+    top: 36rem;
+    left: 12rem;
+    width: 70%;
+    height: 60%;
   }
 
-  @media (max-width: 700px) {
-    display: none;
+  @media (max-width: 1000px) {
+    width: 60%;
+    height: 60%;
+    top: 20rem;
+    left: 8rem;
   }
 `
 
@@ -268,14 +271,14 @@ const ImageWrapper3 = styled.div`
   left: 15rem;
 
   @media (max-width: 1000px) {
-    width: 20%;
+    width: 60%;
     top: 5rem;
     left: 10rem;
   }
 
   @media (max-width: 700px) {
-    width: 25%;
-    top: 1.5rem;
+    width: 36%;
+    top: 5rem;
     left: 12rem;
   }
 `
@@ -293,6 +296,10 @@ const Footer = styled.footer`
   @media (max-width: 1000px) {
     height: 10vh;
   }
+
+  @media (max-width: 700px) {
+    height: 100%;
+  }
 `
 
 const FooterMenus = styled.div`
@@ -306,6 +313,7 @@ const FooterMenus = styled.div`
 const FooterMenu = styled.div`
   font-size: 1.2rem;
   margin-right: 5rem;
+
   @media (max-width: 1000px) {
     margin-right: 2.5rem;
   }
