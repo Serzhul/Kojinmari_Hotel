@@ -3,12 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { IRoom } from 'constants/interfaces'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/navigation'
-import { WISHLISTS_QUERY_KEY } from 'constants/queryKey'
+import { WISHLIST_QUERY_KEY } from 'constants/queryKey'
 
 function MyWishlist() {
   const router = useRouter()
   const { isLoading, data: wishlists } = useQuery({
-    queryKey: [WISHLISTS_QUERY_KEY],
+    queryKey: [WISHLIST_QUERY_KEY],
     queryFn: () =>
       fetch('/api/get-wishlists')
         .then((res) => res.json())

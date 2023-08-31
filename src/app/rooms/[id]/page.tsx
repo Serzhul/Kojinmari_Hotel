@@ -18,7 +18,7 @@ import Spinner from '@components/Spinner'
 import { useSession } from '@supabase/auth-helpers-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { usePersonalWishlist } from '@/hooks/usePersonalWishlist'
-import { PERSONAL_WISHLIST_KEY, WISHLISTS_QUERY_KEY } from 'constants/queryKey'
+import { WISHLIST_QUERY_KEY } from 'constants/queryKey'
 import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from 'constants/ItemMaps'
 import SpinnerMini from '@components/SpinnerMini'
 interface IWishlist {
@@ -53,12 +53,12 @@ function RoomPage() {
       }),
     {
       onMutate: async (status) => {
-        await queryClient.cancelQueries([PERSONAL_WISHLIST_KEY])
+        await queryClient.cancelQueries([WISHLIST_QUERY_KEY, session])
 
-        const previous = queryClient.getQueryData([PERSONAL_WISHLIST_KEY])
+        const previous = queryClient.getQueryData([WISHLIST_QUERY_KEY, session])
 
         queryClient.setQueryData<IWishlist[]>(
-          [PERSONAL_WISHLIST_KEY],
+          [WISHLIST_QUERY_KEY, session],
           (old) => {
             if (old) {
               if (old?.includes(status.roomId))
@@ -68,11 +68,13 @@ function RoomPage() {
           },
         )
 
+        console.log(previous, '테스트')
+
         return { previous }
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: [PERSONAL_WISHLIST_KEY, WISHLISTS_QUERY_KEY],
+          queryKey: [WISHLIST_QUERY_KEY],
         })
       },
     },

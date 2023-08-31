@@ -29,6 +29,8 @@ async function updateWishlist(userId: string, roomId: string) {
       .eq('userId', userId)
       .select()
 
+    console.log(wishlists, '업데이트 됨')
+
     return wishlists
   } catch (error) {
     console.error(error)
