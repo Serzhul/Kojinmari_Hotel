@@ -10,7 +10,7 @@ function Navbar() {
   const session = useSession()
 
   return (
-    <div className="flex">
+    <MenuContainer>
       <Menu onClick={() => router.push('/rooms')}>
         <MenuItem>방 목록</MenuItem>
       </Menu>
@@ -41,14 +41,33 @@ function Navbar() {
           </Menu>
         </>
       )}
-    </div>
+    </MenuContainer>
   )
 }
 
 export default Navbar
 
+const MenuContainer = styled.div`
+  display: flex;
+
+  @media (max-width: 1000px) {
+    font-size: 1.5rem;
+    width: 50%;
+  }
+
+  @media (max-width: 700px) {
+    font-size: 1.2rem;
+    background-color: red;
+  }
+`
+
 const Menu = styled.nav`
   margin: 0 3rem;
+
+  @media (max-width: 1000px) {
+    font-size: 12px;
+    display: none;
+  }
 `
 
 const MenuItem = styled.div`

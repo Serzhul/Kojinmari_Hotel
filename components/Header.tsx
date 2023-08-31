@@ -26,5 +26,8 @@ const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+
+  @media (max-width: 1000px) {
+    -webkit-backface-visibility: hidden;
+  }
 `

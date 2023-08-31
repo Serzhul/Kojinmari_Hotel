@@ -29,6 +29,9 @@ function Logo({
 export default Logo
 
 const StyledLogo = styled.div`
+  @media (max-width: 700px) {
+  }
+
   &:hover {
     cursor: ${(props: { link: boolean }) => (props.link ? 'pointer' : '')};
   }
