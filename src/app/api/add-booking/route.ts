@@ -1,9 +1,11 @@
 import { IBooking } from '@/app/booking/page'
-import supabase from 'constants/supabseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function addBooking(booking: IBooking) {
   try {
+    const supabase = createServerComponentClient({ cookies })
     const { data } = await supabase.from('bookings').insert([booking])
 
     console.log(data)

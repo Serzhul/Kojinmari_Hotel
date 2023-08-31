@@ -1,10 +1,10 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import supabase from 'constants/supabseClient'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 async function getBooking(userEmail: string) {
   try {
+    const supabase = createServerComponentClient({ cookies })
     let { data: guest } = await supabase
       .from('guests')
       .select('*')

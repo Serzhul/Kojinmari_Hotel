@@ -10,9 +10,6 @@ export function useSignup() {
       })
         .then((res) => res.json())
         .then((data) => data.items),
-    onSuccess: (user) => {
-      console.log(user)
-    },
   })
 
   return { signup, isLoading }

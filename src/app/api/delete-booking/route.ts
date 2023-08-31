@@ -1,8 +1,10 @@
-import supabase from 'constants/supabseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function deleteBooking(bookingId: string) {
   try {
+    const supabase = createServerComponentClient({ cookies })
     await supabase.from('bookings').delete().eq('id', bookingId)
   } catch (error) {
     console.error(error)

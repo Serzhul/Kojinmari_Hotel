@@ -30,8 +30,8 @@ function RoomPage() {
   const router = useRouter()
   const { isLoading, room: roomDetail } = useRoomDetail()
   const session = useSession()
-  const params = useParams()
   const { personalWishlist } = usePersonalWishlist()
+  const params = useParams()
   const queryClient = useQueryClient()
 
   const userId = session?.user?.email
@@ -50,9 +50,7 @@ function RoomPage() {
           userId,
           roomId,
         }),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data)),
+      }),
     {
       onMutate: async (status) => {
         await queryClient.cancelQueries([PERSONAL_WISHLIST_KEY])

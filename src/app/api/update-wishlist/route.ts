@@ -1,8 +1,11 @@
-import supabase from 'constants/supabseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function updateWishlist(userId: string, roomId: string) {
   try {
+    const supabase = createServerComponentClient({ cookies })
+
     let { data } = await supabase
       .from('wishlists')
       .select('roomIds')

@@ -1,15 +1,17 @@
 import { rooms } from '@/data/data-rooms'
-import supabase from 'constants/supabseClient'
+// import supabase from 'constants/supabseClient'
 import { NextResponse } from 'next/server'
 
+// const supabase = createServerComponentClient({ cookies })
+
 async function createRooms() {
-  const { error } = await supabase.from('rooms').insert(rooms)
-  if (error) console.log(error.message)
+  // const { error } = await supabase.from('rooms').insert(rooms)
+  // if (error) console.log(error.message)
 }
 
 async function deleteRooms() {
-  const { error } = await supabase.from('rooms').delete().gt('id', 0)
-  if (error) console.log(error.message)
+  // const { error } = await supabase.from('rooms').delete().gt('id', 0)
+  // if (error) console.log(error.message)
 }
 
 async function uploadAll() {

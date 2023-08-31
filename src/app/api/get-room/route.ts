@@ -1,7 +1,10 @@
-import supabase from 'constants/supabseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function getRoom(roomId: string) {
+  const supabase = createServerComponentClient({ cookies })
+
   let { data: room } = await supabase
     .from('rooms')
     .select('*')

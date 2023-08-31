@@ -1,10 +1,11 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import supabase from 'constants/supabseClient'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 async function getWishlist(userId: string) {
   try {
+    const supabase = createServerComponentClient({ cookies })
+
     let { data: wishlist } = await supabase
       .from('wishlists')
       .select('*')
@@ -29,6 +30,7 @@ export async function GET() {
     return NextResponse.json(
       {
         message: 'No User Data',
+        items: null,
       },
       {
         status: 400,

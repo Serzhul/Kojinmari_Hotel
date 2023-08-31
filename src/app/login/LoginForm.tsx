@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Form from '@components/Form'
 import styled from '@emotion/styled'
 import FormRowVertical from '@components/FormRowVertical'
@@ -34,10 +34,6 @@ function LoginForm() {
       provider: 'google',
     })
   }
-
-  useEffect(() => {
-    console.log(loginError)
-  }, [loginError])
 
   return (
     <Form onSubmit={handleSignIn}>

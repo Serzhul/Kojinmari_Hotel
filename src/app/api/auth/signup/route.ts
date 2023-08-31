@@ -1,5 +1,7 @@
 import { FormValues } from '@/app/signup/SignupForm'
-import supabase from 'constants/supabseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+
 import { NextRequest, NextResponse } from 'next/server'
 
 async function createUser({
@@ -9,6 +11,7 @@ async function createUser({
   password,
 }: FormValues) {
   try {
+    const supabase = createServerComponentClient({ cookies })
     let { data: user } = await supabase.auth.signUp({
       email,
       password,

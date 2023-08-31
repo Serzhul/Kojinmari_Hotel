@@ -1,10 +1,11 @@
 import { Logout as LogoutIcon } from 'tabler-icons-react'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useState } from 'react'
 import SpinnerMini from './SpinnerMini'
 
 function Logout() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const supabase = createClientComponentClient()
 
@@ -13,7 +14,7 @@ function Logout() {
     await supabase.auth.signOut()
 
     setIsLoading(false)
-    redirect('/')
+    router.push('/')
   }
 
   return (

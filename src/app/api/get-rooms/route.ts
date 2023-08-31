@@ -1,5 +1,4 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-// import supabase from 'constants/supabseClient'
 import { PAGE_SIZE } from 'constants/variables'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
