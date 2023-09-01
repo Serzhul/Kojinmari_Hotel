@@ -197,9 +197,10 @@ const HotelImageWrapper1 = styled.div`
   }
 
   @media (max-width: 700px) {
-    top: 25rem;
+    top: 22rem;
     left: 6rem;
     width: 70%;
+    height: 55%;
   }
 `
 
@@ -237,7 +238,7 @@ const TextImageWrapper2 = styled.div`
   @media (max-width: 700px) {
     width: 70%;
     top: 3rem;
-    left: 8rem;
+    left: 6rem;
   }
 `
 
@@ -249,16 +250,16 @@ const HotelImageWrapper2 = styled.div`
   right: 0.5rem;
 
   @media (max-width: 1000px) {
-    top: 36rem;
-    left: 12rem;
     width: 70%;
     height: 60%;
+    top: 36rem;
+    left: 12rem;
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 700px) {
     width: 60%;
     height: 60%;
-    top: 20rem;
+    top: 22rem;
     left: 8rem;
   }
 `
@@ -305,6 +306,7 @@ const Footer = styled.footer`
 const FooterMenus = styled.div`
   display: flex;
   justify-content: space-between;
+
   @media (max-width: 700px) {
     flex-direction: column;
     gap: 0.5rem;

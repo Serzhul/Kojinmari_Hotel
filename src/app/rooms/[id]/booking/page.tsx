@@ -136,12 +136,19 @@ function RoomBookingPage() {
 export default RoomBookingPage
 
 const RoomBookingContainer = styled.div`
-  margin: 4rem auto;
+  margin: 12rem auto;
   min-height: 50%;
-  width: 100rem;
+  width: 100%;
   padding: 1.8rem;
   border: 1px solid var(--color-grey-400);
   border-radius: var(--border-radius-md);
+
+  @media (max-width: 1000px) {
+    transform: scale(0.9);
+  }
+
+  @media (max-width: 700px) {
+  }
 `
 
 const RoomBookingTitle = styled.div`
@@ -156,6 +163,11 @@ const RoomBookingInfo = styled.div`
   grid-template-columns: 1.3fr 1fr 1fr;
   border-top: 1px solid var(--color-grey-400);
   border-bottom: 1px solid var(--color-grey-400);
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 const RoomBookingInfoItem = styled.div`
@@ -168,6 +180,17 @@ const RoomBookingInfoItem = styled.div`
 
   &:last-child {
     border: none;
+  }
+
+  @media (max-width: 700px) {
+    gap: 1rem;
+    border-left: 1px solid var(--color-grey-400);
+    border-bottom: 1px solid var(--color-grey-400);
+
+    &:last-child {
+      border-left: 1px solid var(--color-grey-400);
+      border-right: 1px solid var(--color-grey-400);
+    }
   }
 `
 
@@ -182,6 +205,11 @@ const RoomBookingDetailHeader = styled.div`
   width: 100%;
   border-bottom: 1px solid var(--color-grey-400);
   padding: 1.8rem;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1.7fr 1.2fr 0.5fr;
+    padding: 1.2rem;
+  }
 `
 
 const RoomBookingDetailItem = styled.div`
@@ -190,6 +218,10 @@ const RoomBookingDetailItem = styled.div`
   width: 100%;
   padding: 1.8rem;
   font-size: 1.4rem;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1.7fr 1.2fr 0.7fr;
+  }
 `
 
 const RoomBookingTotal = styled.div`
@@ -197,6 +229,11 @@ const RoomBookingTotal = styled.div`
   margin-left: auto;
   border-bottom: 1px solid var(--color-grey-400);
   color: var(--color-red-400);
+
+  @media (max-width: 700px) {
+    width: 45%;
+    margin-right: 1rem;
+  }
 `
 
 const RoomBookingButton = styled.button`

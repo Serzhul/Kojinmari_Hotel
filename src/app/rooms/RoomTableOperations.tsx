@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import { Select } from '@mantine/core'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useState } from 'react'
@@ -20,7 +21,7 @@ function RoomTableOperations() {
   )
 
   return (
-    <div className="mt-8">
+    <OperationsContainer>
       <Select
         placeholder="정렬 기준"
         value={sort}
@@ -56,8 +57,16 @@ function RoomTableOperations() {
         ]}
         size="xl"
       />
-    </div>
+    </OperationsContainer>
   )
 }
 
 export default RoomTableOperations
+
+const OperationsContainer = styled.div`
+  margin-top: 8rem;
+
+  @media (max-width: 1000px) {
+    margin-top: 4rem;
+  }
+`

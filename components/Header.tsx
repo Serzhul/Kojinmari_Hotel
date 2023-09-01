@@ -2,10 +2,12 @@
 import styled from '@emotion/styled'
 import Navbar from './Navbar'
 import Logo from './Logo'
+import ToggleMenu from './ToggleMenu'
 
 function Header() {
   return (
     <StyledHeader>
+      <ToggleMenu />
       <Logo link />
       <Navbar />
     </StyledHeader>

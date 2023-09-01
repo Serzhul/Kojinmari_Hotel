@@ -96,35 +96,37 @@ function RoomPage() {
   const isWished = personalWishlist ? personalWishlist.includes(roomId) : false
 
   return (
-    <div className="flex">
+    <RoomDetailContainer>
       {roomDetail && (
         <>
-          <Carousel
-            cellAlign="center"
-            defaultControlsConfig={{
-              nextButtonStyle: {
-                borderRadius: '100%',
-              },
-              nextButtonText: <IconArrowRight />,
-              prevButtonStyle: {
-                borderRadius: '100%',
-              },
-              prevButtonText: <IconArrowLeft />,
-            }}
-          >
-            {roomDetail?.image.split(',').map((image: string) => (
-              <Image
-                width="1000"
-                height="600"
-                key={image}
-                src={image}
-                alt={`${roomDetail?.name} image`}
-                style={{
-                  objectFit: 'contain',
-                }}
-              />
-            ))}
-          </Carousel>
+          <CarouselContainer>
+            <Carousel
+              cellAlign="center"
+              defaultControlsConfig={{
+                nextButtonStyle: {
+                  borderRadius: '100%',
+                },
+                nextButtonText: <IconArrowRight />,
+                prevButtonStyle: {
+                  borderRadius: '100%',
+                },
+                prevButtonText: <IconArrowLeft />,
+              }}
+            >
+              {roomDetail?.image.split(',').map((image: string) => (
+                <Image
+                  width="1000"
+                  height="600"
+                  key={image}
+                  src={image}
+                  alt={`${roomDetail?.name} image`}
+                  style={{
+                    objectFit: 'contain',
+                  }}
+                />
+              ))}
+            </Carousel>
+          </CarouselContainer>
 
           <StyledDescription>
             <StyledTitle>{roomDetail?.name}</StyledTitle>
@@ -221,15 +223,44 @@ function RoomPage() {
           </StyledDescription>
         </>
       )}
-    </div>
+    </RoomDetailContainer>
   )
 }
 
 export default RoomPage
 
+const RoomDetailContainer = styled.div`
+  display: flex;
+  margin-top: 8rem;
+`
+
+const CarouselContainer = styled.div`
+  @media (max-width: 1000px) {
+    position: absolute;
+    width: 95%;
+    top: 6rem;
+    left: 2.5rem;
+  }
+
+  @media (max-width: 700px) {
+    width: 88%;
+    top: 9rem;
+    left: 2.5rem;
+  }
+`
+
 const StyledDescription = styled.div`
   font-size: 1.7rem;
   padding: 0 40px;
+
+  @media (max-width: 1000px) {
+    position: absolute;
+    top: 62rem;
+  }
+
+  @media (max-width: 700px) {
+    top: 34rem;
+  }
 `
 
 const StyledTitle = styled.div`
@@ -253,6 +284,7 @@ const StyledInfoBox = styled.div`
   justify-content: space-around;
   border: 1px solid var(--color-grey-600);
   margin-bottom: 2.6rem;
+  flex-wrap: wrap;
 `
 
 const StyledPriceBox = styled.div`
@@ -284,6 +316,12 @@ const WishlistButton = styled.button`
   border-radius: var(--border-radius-md);
   background-color: var(--color-red-400);
   color: #fff;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.6rem;
+  }
 `
 
 const BookingButton = styled.button`
@@ -298,5 +336,9 @@ const BookingButton = styled.button`
   &:hover {
     color: var(--color-blue-700);
     background-color: white;
+  }
+
+  @media (max-width: 700px) {
+    font-size: 2.6rem;
   }
 `

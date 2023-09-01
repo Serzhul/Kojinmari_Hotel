@@ -25,7 +25,7 @@ function LoginPage() {
 export default LoginPage
 
 const LoginLayout = styled.main`
-  width: 500px;
+  width: 36%;
   margin: 0 auto;
   min-height: 70vh;
   display: flex;
@@ -34,4 +34,12 @@ const LoginLayout = styled.main`
   justify-content: center;
   gap: 3.2rem;
   position: relative;
+
+  @media (max-width: 1000px) {
+    width: 80%;
+  }
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }
 `

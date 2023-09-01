@@ -8,7 +8,7 @@ const rotate = keyframes`
 `
 
 const Spinner = styled.div`
-  margin: 4.8rem auto;
+  margin: 15rem auto;
   width: 6.4rem;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -18,6 +18,14 @@ const Spinner = styled.div`
     conic-gradient(#0000 30%, var(--color-brand-600));
   -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 10px), #000 0);
   animation: ${rotate} 1.5s infinite linear;
+
+  @media (max-width: 1000px) {
+    margin-top: 40rem;
+  }
+
+  @media (max-width: 700px) {
+    margin-top: 30rem;
+  }
 `
 
 export default Spinner

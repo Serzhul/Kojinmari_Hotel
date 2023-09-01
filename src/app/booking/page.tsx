@@ -89,7 +89,7 @@ function BookingPage() {
   )
 
   return (
-    <div>
+    <BookingPageContainer>
       {bookings && bookedRoomsDetail && bookings.length > 0 ? (
         bookings.map((booking) => (
           <BookingItem key={booking.id}>
@@ -185,11 +185,15 @@ function BookingPage() {
       ) : (
         <EmptyPage>예약 내용이 없습니다...</EmptyPage>
       )}
-    </div>
+    </BookingPageContainer>
   )
 }
 
 export default BookingPage
+
+const BookingPageContainer = styled.div`
+  margin-top: 10rem;
+`
 
 const BookingItem = styled.div`
   margin: 1.6rem;
