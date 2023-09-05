@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { CSSProperties } from 'react'
-import ToggleMenu from './ToggleMenu'
 
 function Logo({
   style,
