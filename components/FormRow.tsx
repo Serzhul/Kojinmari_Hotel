@@ -3,11 +3,12 @@ import { ReactElement } from 'react'
 import { FieldError, Merge, FieldErrorsImpl } from 'react-hook-form'
 
 const StyledFormRow = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 1rem;
   align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2rem;
   padding: 1.2rem 0;
+  position: relative;
 
   &:first-of-type {
     padding-top: 0;
@@ -26,13 +27,15 @@ const StyledFormRow = styled.div`
     justify-content: flex-end;
     gap: 1.2rem;
   }
+
+  &:not(:last-child) {
+    border-bottom: none;
+  }
 `
 
 const StyledErrorRow = styled.div`
-  display: grid;
+  display: flex;
   align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2rem;
 
   &:first-of-type {
     padding-top: 0;
@@ -51,13 +54,17 @@ const StyledErrorRow = styled.div`
 
 const Label = styled.label`
   font-weight: 500;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  position: absolute;
+  left: 0;
 `
 
 const Error = styled.span`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2rem;
+  display: flex;
   font-size: 1.4rem;
   color: var(--color-red-700);
 `
@@ -78,11 +85,10 @@ function FormRow({
   return (
     <>
       <StyledFormRow>
-        {label && <Label htmlFor={children?.props?.id}>{label}</Label>}
         {children}
+        {label && <Label htmlFor={children?.props?.id}>{label}</Label>}
       </StyledFormRow>
       <StyledErrorRow>
-        <div />
         {error && <Error>{error as string}</Error>}
       </StyledErrorRow>
     </>

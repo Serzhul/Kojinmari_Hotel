@@ -19,7 +19,7 @@ export interface FormValues {
 
 function SignupForm() {
   const router = useRouter()
-  const { register, formState, getValues, handleSubmit, reset } =
+  const { register, formState, getValues, handleSubmit, reset, watch } =
     useForm<FormValues>()
   const { errors } = formState
   const { signup, isLoading } = useSignup()
@@ -55,7 +55,10 @@ function SignupForm() {
         <Spinner />
       ) : (
         <>
-          <FormRow label="성" error={errors?.firstName?.message}>
+          <FormRow
+            label={watch('lastName') ? '' : '성'}
+            error={errors?.lastName?.message}
+          >
             <Input
               type="text"
               id="lastName"
@@ -66,7 +69,10 @@ function SignupForm() {
             />
           </FormRow>
 
-          <FormRow label="이름" error={errors?.lastName?.message}>
+          <FormRow
+            label={watch('firstName') ? '' : '이름'}
+            error={errors?.lastName?.message}
+          >
             <Input
               type="text"
               id="firstName"
@@ -77,7 +83,10 @@ function SignupForm() {
             />
           </FormRow>
 
-          <FormRow label="이메일" error={errors?.email?.message}>
+          <FormRow
+            label={watch('email') ? '' : '이메일'}
+            error={errors?.email?.message}
+          >
             <Input
               type="email"
               id="email"
@@ -93,7 +102,7 @@ function SignupForm() {
           </FormRow>
 
           <FormRow
-            label="비밀번호 (8자 이상)"
+            label={watch('password') ? '' : '비밀번호(8자 이상)'}
             error={errors?.password?.message}
           >
             <Input
@@ -111,7 +120,7 @@ function SignupForm() {
           </FormRow>
 
           <FormRow
-            label="비밀번호 확인"
+            label={watch('passwordConfirm') ? '' : '비밀번호 확인'}
             error={errors?.passwordConfirm?.message}
           >
             <Input
@@ -148,9 +157,18 @@ function SignupForm() {
 export default SignupForm
 
 const Input = styled.input`
-  border: 1px solid var(--color-grey-300);
-  background-color: var(--color-grey-0);
-  border-radius: var(--border-radius-sm);
   padding: 0.8rem 1.2rem;
   box-shadow: var(--shadow-sm);
+
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--color-grey-300);
+  outline: none;
+
+  &:focus {
+    ~ label {
+      transform: translateY(-3rem) translateX(-1rem) scale(0.8);
+    }
+  }
 `

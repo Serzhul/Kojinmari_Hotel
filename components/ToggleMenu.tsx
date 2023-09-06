@@ -125,7 +125,7 @@ const ToggleButton = styled.li`
 
     &:last-of-type {
       transform: ${(props: { toggle: boolean }) =>
-        props.toggle ? 'translate(0, -3.5px) rotate(-45deg)' : ''};
+        props.toggle ? 'translate(0, -5px) rotate(-45deg)' : ''};
     }
   }
 `

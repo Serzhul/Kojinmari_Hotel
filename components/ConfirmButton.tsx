@@ -27,4 +27,9 @@ export const ConfirmButton = styled.button`
           ? 'var(--color-green-700)'
           : 'var(--color-red-400)'};
   }
+
+  @media (max-width: 1000px) {
+    font-size: 2rem;
+    width: 12rem;
+  }
 `

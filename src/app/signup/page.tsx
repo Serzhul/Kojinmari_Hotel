@@ -13,6 +13,16 @@ function SignupPage() {
 export default SignupPage
 
 const SignupContainer = styled.div`
-  width: 60rem;
+  width: 50%;
   margin: 4rem auto;
+
+  @media (max-width: 1000px) {
+    margin-top: 10rem;
+    width: 80%;
+  }
+
+  @media (max-width: 700px) {
+    margin-top: 10rem;
+    width: 80%;
+  }
 `
