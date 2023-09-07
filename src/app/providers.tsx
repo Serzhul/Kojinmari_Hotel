@@ -5,6 +5,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import Header from '@components/Header'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Database } from 'types/supabase'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -18,7 +19,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       }),
   )
 
-  const [supabaseClient] = useState(() => createClientComponentClient())
+  const [supabaseClient] = useState(() =>
+    createClientComponentClient<Database>(),
+  )
 
   return (
     <SessionContextProvider supabaseClient={supabaseClient}>

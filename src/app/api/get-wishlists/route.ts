@@ -13,8 +13,6 @@ async function getWishlists(userId: string) {
 
     const roomIds = wishlists ? wishlists.roomIds?.split(',') : []
 
-    console.log(roomIds, '?????')
-
     if (roomIds && roomIds.length > 0) {
       let { data: wishlists } = await supabase
         .from('rooms')

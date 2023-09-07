@@ -104,6 +104,49 @@ export interface Database {
           },
         ]
       }
+      reviews: {
+        Row: {
+          bookingId: number | null
+          contents: string | null
+          created_at: string
+          guestId: string | null
+          id: number
+          images: string | null
+          rate: number | null
+        }
+        Insert: {
+          bookingId?: number | null
+          contents?: string | null
+          created_at?: string
+          guestId?: string | null
+          id?: number
+          images?: string | null
+          rate?: number | null
+        }
+        Update: {
+          bookingId?: number | null
+          contents?: string | null
+          created_at?: string
+          guestId?: string | null
+          id?: number
+          images?: string | null
+          rate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'reviews_bookingId_fkey'
+            columns: ['bookingId']
+            referencedRelation: 'bookings'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'reviews_guestId_fkey'
+            columns: ['guestId']
+            referencedRelation: 'guests'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       rooms: {
         Row: {
           booked: boolean | null

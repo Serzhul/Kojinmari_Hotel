@@ -3,10 +3,12 @@ import {
   IconHeart,
   IconBuildingSkyscraper,
   IconLockSquare,
+  IconStars,
 } from '@tabler/icons-react'
 import { Accordion, rem, Group, Text } from '@mantine/core'
 import MyWishlist from './MyWishlist'
 import styled from '@emotion/styled'
+import MyReviewlist from './MyReviewlist'
 
 const charactersList = [
   {
@@ -21,6 +23,12 @@ const charactersList = [
     label: '예약 목록',
     icon: <IconBuildingSkyscraper size={rem(40)} />,
     content: '예약 현황을 확인할 수 있습니다.',
+  },
+  {
+    id: 'review',
+    label: '평점 목록',
+    icon: <IconStars size={rem(40)} />,
+    content: <MyReviewlist />,
   },
 
   {
