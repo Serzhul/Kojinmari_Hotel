@@ -10,6 +10,7 @@ import { useRef } from 'react'
 import { IconPhotoPlus } from '@tabler/icons-react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { REVIEW_IMAGE_URL } from 'constants/variables'
+import { useRouter } from 'next/navigation'
 
 function InsertImageControl() {
   const { editor } = useRichTextEditorContext()
@@ -75,7 +76,15 @@ function InsertImageControl() {
   )
 }
 
-function CustomEditor({ content }: { content: string }) {
+function CustomEditor({
+  content,
+  onSave,
+}: {
+  content: string
+  onSave: (editorContents: string) => void
+}) {
+  const router = useRouter()
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -137,12 +146,45 @@ function CustomEditor({ content }: { content: string }) {
 
         <RichTextEditor.Content />
       </RichTextEditor>
+
+      <ButtonContainer>
+        <CancelButton onClick={() => router.back()}>취소하기</CancelButton>
+        <SaveButton onClick={() => onSave(editor?.getHTML() ?? '')}>
+          저장하기
+        </SaveButton>
+      </ButtonContainer>
     </EditorContainer>
   )
 }
 
 export default CustomEditor
 
-const EditorContainer = styled.div`
-  margin-top: 10rem;
+const EditorContainer = styled.div``
+
+const ButtonContainer = styled.div`
+  margin-top: 1.4rem;
+  display: flex;
+  max-width: 20rem;
+  font-size: 1.5rem;
+  justify-content: flex-end;
+  gap: 2rem;
+`
+
+const CancelButton = styled.button`
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: var(--border-radius-sm);
+  background-color: #f3f5f7;
+  font-weight: 500;
+  color: #404048;
+`
+const SaveButton = styled.button`
+  background-color: #e3f6ed;
+  color: #09aa5c;
+  display: block;
+  width: 100%;
+  min-height: 3.4rem;
+  padding: 0.8rem;
+  border-radius: var(--border-radius-sm);
 `

@@ -26,7 +26,7 @@ const charactersList = [
   },
   {
     id: 'review',
-    label: '평점 목록',
+    label: '리뷰 목록',
     icon: <IconStars size={rem(40)} />,
     content: <MyReviewlist />,
   },

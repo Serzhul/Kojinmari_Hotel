@@ -9,7 +9,7 @@ interface ReviewsType extends Database {
   }
 }
 
-async function getReviews(guestId: string) {
+async function getReviewlist(guestId: string) {
   const supabase = createServerComponentClient({ cookies })
 
   let { data: reviews } = await supabase
@@ -32,8 +32,7 @@ async function getReviews(guestId: string) {
       if (rooms && rooms[idx])
         return {
           ...review,
-          name: rooms[idx].name,
-          roomId: rooms[idx].id,
+          rooms: rooms[idx],
         }
     })
 
@@ -59,7 +58,7 @@ export async function GET() {
       },
     )
 
-  const reviews = await getReviews(guestId)
+  const reviews = await getReviewlist(guestId)
 
   return NextResponse.json(
     {

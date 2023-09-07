@@ -2,37 +2,36 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-async function getReview(reviewId: string) {
+async function getRoomViews(roomId: string) {
   const supabase = createServerComponentClient({ cookies })
 
-  let { data: review } = await supabase
+  let { data: reviews } = await supabase
     .from('reviews')
-    .select('id, guestId, rate,contents, images, rooms(name,id)')
-    .eq('id', reviewId)
-    .single()
+    .select('id, rate, contents,images, guestId, guests(email)')
+    .eq('roomId', roomId)
 
-  return review
+  return reviews
 }
 
 export async function GET(req: NextRequest) {
-  const reviewId = req.nextUrl.searchParams.get('reviewId')
+  const roomId = req.nextUrl.searchParams.get('roomId')
 
-  if (!reviewId)
+  if (!roomId)
     return NextResponse.json(
       {
-        error: 'There is no reviewId',
+        error: 'There is no roomId',
       },
       {
         status: 400,
       },
     )
 
-  const review = await getReview(reviewId)
+  const reviews = await getRoomViews(roomId)
 
   return NextResponse.json(
     {
       message: 'Review loaded successfully',
-      items: review,
+      items: reviews,
     },
     {
       status: 200,

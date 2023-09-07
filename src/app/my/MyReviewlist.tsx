@@ -1,18 +1,25 @@
 import styled from '@emotion/styled'
-import { IReview } from '../rooms/[id]/review/page'
+import { IReview } from '../review/[id]/page'
 import Spinner from '@components/Spinner'
-import { useReviews } from '@/hooks/useReviews'
+import { useReviewlist } from '@/hooks/useReviewlist'
+import { useRouter } from 'next/navigation'
 
 function MyReviewlist() {
-  const { reviews, isLoading } = useReviews()
+  const { reviewlist, isLoading } = useReviewlist()
+  const router = useRouter()
 
   if (isLoading) return <Spinner />
 
   return (
     <div>
-      {reviews && reviews.length > 0 ? (
-        reviews?.map((item: IReview) => (
-          <ReviewlistItem key={item.id}>{item.name}</ReviewlistItem>
+      {reviewlist && reviewlist.length > 0 ? (
+        reviewlist?.map((item: IReview) => (
+          <ReviewlistItem
+            key={item.id}
+            onClick={() => router.push(`/rooms/${item.rooms?.id}`)}
+          >
+            {item?.rooms?.name}
+          </ReviewlistItem>
         ))
       ) : (
         <div>리뷰 목록이 없습니다.</div>

@@ -21,18 +21,20 @@ import { usePersonalWishlist } from '@/hooks/usePersonalWishlist'
 import { WISHLIST_QUERY_KEY } from 'constants/queryKey'
 import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from 'constants/ItemMaps'
 import SpinnerMini from '@components/SpinnerMini'
+import RoomReview from './RoomReview'
 interface IWishlist {
   userId: string
   roomIds: string[]
 }
 
 function RoomPage() {
-  const router = useRouter()
-  const { isLoading, room: roomDetail } = useRoomDetail()
-  const session = useSession()
-  const { personalWishlist } = usePersonalWishlist()
   const params = useParams()
   const queryClient = useQueryClient()
+  const router = useRouter()
+  const session = useSession()
+
+  const { isLoading, room: roomDetail } = useRoomDetail()
+  const { personalWishlist } = usePersonalWishlist()
 
   const userId = session?.user?.email
   const roomId = params['id']
@@ -68,8 +70,6 @@ function RoomPage() {
           },
         )
 
-        console.log(previous, '테스트')
-
         return { previous }
       },
       onSuccess: () => {
@@ -96,134 +96,138 @@ function RoomPage() {
   const isWished = personalWishlist ? personalWishlist.includes(roomId) : false
 
   return (
-    <RoomDetailContainer>
-      {roomDetail && (
-        <>
-          <CarouselContainer>
-            <Carousel
-              cellAlign="center"
-              defaultControlsConfig={{
-                nextButtonStyle: {
-                  borderRadius: '100%',
-                },
-                nextButtonText: <IconArrowRight />,
-                prevButtonStyle: {
-                  borderRadius: '100%',
-                },
-                prevButtonText: <IconArrowLeft />,
-              }}
-            >
-              {roomDetail?.image.split(',').map((image: string) => (
-                <Image
-                  width="1000"
-                  height="600"
-                  key={image}
-                  src={image}
-                  alt={`${roomDetail?.name} image`}
-                  style={{
-                    objectFit: 'contain',
-                  }}
-                />
-              ))}
-            </Carousel>
-          </CarouselContainer>
+    <>
+      <RoomDetailContainer>
+        {roomDetail && (
+          <>
+            <CarouselContainer>
+              <Carousel
+                cellAlign="center"
+                defaultControlsConfig={{
+                  nextButtonStyle: {
+                    borderRadius: '100%',
+                  },
+                  nextButtonText: <IconArrowRight />,
+                  prevButtonStyle: {
+                    borderRadius: '100%',
+                  },
+                  prevButtonText: <IconArrowLeft />,
+                }}
+              >
+                {roomDetail?.image.split(',').map((image: string) => (
+                  <Image
+                    width="1000"
+                    height="600"
+                    key={image}
+                    src={image}
+                    alt={`${roomDetail?.name} image`}
+                    style={{
+                      objectFit: 'contain',
+                    }}
+                  />
+                ))}
+              </Carousel>
+            </CarouselContainer>
 
-          <StyledDescription>
-            <StyledTitle>{roomDetail?.name}</StyledTitle>
-            <StyledContent>
-              <div>{roomDetail?.description}</div>
-            </StyledContent>
-            <StyledInfoBox>
-              <div className="flex flex-col items-center">
-                <IconUsers />
-                <div>최대 {roomDetail?.maxCapacity}인</div>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <IconBed />
-                <div>
-                  {ROOM_TYPE_MAP[roomDetail?.roomType as ROOM_TYPE_KEY]}
-                </div>
-              </div>
-            </StyledInfoBox>
-            <StyledPriceBox>
-              <div>
-                <span>가격</span>
-                {hasDiscount && (
-                  <StyledDiscountBox>
-                    <span>할인</span>
-                  </StyledDiscountBox>
-                )}
-              </div>
-
-              <div className="flex items-center">
-                <div className="flex-col">
-                  <IconCurrencyWon size={30} className="mr-8" />
-                </div>
+            <StyledDescription>
+              <StyledTitle>{roomDetail?.name}</StyledTitle>
+              <StyledContent>
+                <div>{roomDetail?.description}</div>
+              </StyledContent>
+              <StyledInfoBox>
                 <div className="flex flex-col items-center">
-                  <span
-                    className={hasDiscount ? 'line-through text-red-500' : ''}
-                  >
-                    {formatCurrency(roomDetail?.regularPrice)}
-                  </span>
-                  {hasDiscount && (
-                    <div className="flex items-center">
-                      <div className="text-green-500 flex text-3xl">
-                        {formatCurrency(roomDetail?.discount)}
-                      </div>
-                    </div>
-                  )}
+                  <IconUsers />
+                  <div>최대 {roomDetail?.maxCapacity}인</div>
                 </div>
-              </div>
-            </StyledPriceBox>
 
-            {hasDiscount && (
+                <div className="flex flex-col items-center">
+                  <IconBed />
+                  <div>
+                    {ROOM_TYPE_MAP[roomDetail?.roomType as ROOM_TYPE_KEY]}
+                  </div>
+                </div>
+              </StyledInfoBox>
               <StyledPriceBox>
                 <div>
-                  <span>최종 가격</span>
+                  <span>가격</span>
+                  {hasDiscount && (
+                    <StyledDiscountBox>
+                      <span>할인</span>
+                    </StyledDiscountBox>
+                  )}
                 </div>
 
                 <div className="flex items-center">
-                  <IconCurrencyWon size={30} className="mr-8" />
-                  <span>
-                    {formatCurrency(
-                      roomDetail?.regularPrice - roomDetail?.discount,
+                  <div className="flex-col">
+                    <IconCurrencyWon size={30} className="mr-8" />
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span
+                      className={hasDiscount ? 'line-through text-red-500' : ''}
+                    >
+                      {formatCurrency(roomDetail?.regularPrice)}
+                    </span>
+                    {hasDiscount && (
+                      <div className="flex items-center">
+                        <div className="text-green-500 flex text-3xl">
+                          {formatCurrency(roomDetail?.discount)}
+                        </div>
+                      </div>
                     )}
-                  </span>
+                  </div>
                 </div>
               </StyledPriceBox>
-            )}
-            <div className="flex mt-16">
-              <WishlistButton
-                onClick={addWishlist}
-                disabled={isUpdatingWishlist}
-              >
-                {isUpdatingWishlist ? (
-                  <SpinnerMini />
-                ) : (
-                  <>
-                    {isWished ? (
-                      <IconHeartFilled className="mr-4" />
-                    ) : (
-                      <>
-                        <IconHeart className="mr-4" />
-                        <span>찜하기</span>
-                      </>
-                    )}
-                  </>
-                )}
-              </WishlistButton>
 
-              <BookingButton
-                onClick={() => router.push(`/rooms/${roomId}/booking`)}
-              >
-                예약하기
-              </BookingButton>
-            </div>
-          </StyledDescription>
-        </>
-      )}
-    </RoomDetailContainer>
+              {hasDiscount && (
+                <StyledPriceBox>
+                  <div>
+                    <span>최종 가격</span>
+                  </div>
+
+                  <div className="flex items-center">
+                    <IconCurrencyWon size={30} className="mr-8" />
+                    <span>
+                      {formatCurrency(
+                        roomDetail?.regularPrice - roomDetail?.discount,
+                      )}
+                    </span>
+                  </div>
+                </StyledPriceBox>
+              )}
+              <div className="flex mt-16">
+                <WishlistButton
+                  onClick={addWishlist}
+                  disabled={isUpdatingWishlist}
+                >
+                  {isUpdatingWishlist ? (
+                    <SpinnerMini />
+                  ) : (
+                    <>
+                      {isWished ? (
+                        <IconHeartFilled className="mr-4" />
+                      ) : (
+                        <>
+                          <IconHeart className="mr-4" />
+                          <span>찜하기</span>
+                        </>
+                      )}
+                    </>
+                  )}
+                </WishlistButton>
+
+                <BookingButton
+                  onClick={() => router.push(`/rooms/${roomId}/booking`)}
+                >
+                  예약하기
+                </BookingButton>
+              </div>
+            </StyledDescription>
+          </>
+        )}
+      </RoomDetailContainer>
+
+      <RoomReview />
+    </>
   )
 }
 
