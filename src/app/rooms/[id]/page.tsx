@@ -1,5 +1,5 @@
 'use client'
-import { useRoomDetail } from '@/hooks/useRoom'
+import { useRoomDetail } from '@/hooks/useRoomDetail'
 import { formatCurrency } from '@/utils/helpers'
 import styled from '@emotion/styled'
 import Image from 'next/image'

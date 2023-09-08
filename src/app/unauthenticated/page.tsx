@@ -7,11 +7,10 @@ function Unauthenticated() {
   const session = useSession()
 
   if (session) {
-    console.log('session', session)
     redirect('/')
   }
 
-  return <p>로그인이 필요한 기능입니다!</p>
+  return <p className="mt-40">로그인이 필요한 기능입니다!</p>
 }
 
 export default Unauthenticated

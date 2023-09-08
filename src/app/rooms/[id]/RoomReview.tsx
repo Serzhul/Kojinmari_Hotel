@@ -6,11 +6,32 @@ import { useSession } from '@supabase/auth-helpers-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { IconEdit, IconTrash } from '@tabler/icons-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { REVIEW_QUERY_KEY } from 'constants/queryKey'
 
 function RoomReview() {
   const { roomReviews } = useRoomReviews()
   const session = useSession()
   const router = useRouter()
+  const queryClient = useQueryClient()
+
+  const { mutate: deleteReview } = useMutation<unknown, unknown, any, any>(
+    (id) =>
+      fetch(`/api/delete-review`, {
+        method: 'POST',
+        body: JSON.stringify({
+          id,
+        }),
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [REVIEW_QUERY_KEY],
+        })
+      },
+    },
+  )
 
   return (
     <>
@@ -18,7 +39,7 @@ function RoomReview() {
         roomReviews.length > 0 &&
         roomReviews.map((review) => (
           <RoomReviewContainer key={review.id}>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <RoomReviewItem>
                 {review.images &&
                   review.images
@@ -37,9 +58,20 @@ function RoomReview() {
                 <div>{getPlainText(review.contents)}</div>
               </RoomReviewItem>
               {review.guestId === session?.user.id && (
-                <EditButton onClick={() => router.push(`/review/${review.id}`)}>
-                  수정하기
-                </EditButton>
+                <CommandGroup>
+                  <CommandItem>
+                    <IconEdit
+                      onClick={() => router.push(`/review/${review.id}`)}
+                      size={rem(50)}
+                    />
+                  </CommandItem>
+                  <CommandItem>
+                    <IconTrash
+                      size={rem(50)}
+                      onClick={() => deleteReview(review.id)}
+                    />
+                  </CommandItem>
+                </CommandGroup>
               )}
             </div>
           </RoomReviewContainer>
@@ -66,10 +98,14 @@ const RoomReviewItem = styled.div`
 
 const ReviewEmail = styled.div``
 
-const EditButton = styled.button`
-  border: 1px solid var(--color-green-700);
-  background-color: var(--color-green-700);
-  color: #fff;
-  border-radius: var(--border-radius-sm);
-  padding: 1.2rem;
+const CommandGroup = styled.div`
+  display: flex;
+  gap: 3rem;
+`
+
+const CommandItem = styled.div`
+  &:hover {
+    cursor: pointer;
+    color: var(--color-brand-500);
+  }
 `

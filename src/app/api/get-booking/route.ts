@@ -21,8 +21,14 @@ async function getBooking(userEmail: string) {
         )
         .eq('guestId', guestId)
 
-      console.log(bookings, 'bookings!!')
-      return bookings
+      let { data: reviews } = await supabase.from('reviews').select('bookingId')
+
+      const reviewBookingIds = reviews?.map((review) => review.bookingId)
+
+      return bookings?.map((booking) => ({
+        ...booking,
+        hasReview: reviewBookingIds?.includes(booking.id),
+      }))
     }
   } catch (error) {
     console.error(error)

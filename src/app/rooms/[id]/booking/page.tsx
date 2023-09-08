@@ -1,5 +1,5 @@
 'use client'
-import { useRoomDetail } from '@/hooks/useRoom'
+import { useRoomDetail } from '@/hooks/useRoomDetail'
 import Spinner from '@components/Spinner'
 import styled from '@emotion/styled'
 import { format } from 'date-fns'
@@ -145,9 +145,6 @@ const RoomBookingContainer = styled.div`
 
   @media (max-width: 1000px) {
     transform: scale(0.9);
-  }
-
-  @media (max-width: 700px) {
   }
 `
 

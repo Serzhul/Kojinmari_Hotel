@@ -1,17 +1,14 @@
 'use client'
-
-import CustomEditor from '@components/Editor'
 import Spinner from '@components/Spinner'
-import { Rating, rem } from '@mantine/core'
 import { useSession } from '@supabase/auth-helpers-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { ROOM_REVIEW_QUERY_KEY } from 'constants/queryKey'
+import Review from '@components/Review'
 
 export interface IReview {
-  id: string
+  id: string | undefined
   guestId: string
   bookingId: number
   roomId: string
@@ -30,7 +27,11 @@ export interface IReview {
 function ReviewEditPage({ params }: { params: { id: string } }) {
   const { id } = params
   const session = useSession()
-  const guestId = session?.user.id
+
+  if (!session) {
+    redirect('/unauthenticated')
+  }
+
   const [content, setContent] = useState<string>()
   const [rate, setRate] = useState<number>()
   const router = useRouter()
@@ -91,18 +92,13 @@ function ReviewEditPage({ params }: { params: { id: string } }) {
         <Spinner />
       ) : (
         <>
-          {review && (
-            <ReviewEditContainer>
-              <RatingContainer>
-                <p>{review?.rooms?.name}의 숙박은 어떠셨나요?</p>
-                {rate && <Rating defaultValue={rate} size={rem(40)} />}
-              </RatingContainer>
-              <ContentsContainer>
-                {content && (
-                  <CustomEditor content={content} onSave={handleSave} />
-                )}
-              </ContentsContainer>
-            </ReviewEditContainer>
+          {review && rate && content && (
+            <Review
+              name={review.rooms?.name ?? ''}
+              rate={rate}
+              content={content}
+              handleSave={handleSave}
+            />
           )}
         </>
       )}
@@ -111,24 +107,3 @@ function ReviewEditPage({ params }: { params: { id: string } }) {
 }
 
 export default ReviewEditPage
-
-const ReviewEditContainer = styled.div`
-  margin: 3rem;
-  padding: 4rem;
-  margin-top: 10rem;
-  font-size: 1.8rem;
-`
-
-const RatingContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  gap: 1.6rem;
-`
-
-const ContentsContainer = styled.div`
-  margin-top: 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`

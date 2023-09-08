@@ -15,6 +15,7 @@ import { ConfirmButton } from '@components/ConfirmButton'
 import { IRoom } from 'constants/interfaces'
 import EmptyPage from '@components/EmptyPage'
 import { useSession } from '@supabase/auth-helpers-react'
+import { BOOKING_STATUS_MAP, BOOKING_STATUS_KEY } from 'constants/ItemMaps'
 
 export interface IBooking {
   endDate: string | null
@@ -32,6 +33,7 @@ export interface IBooking {
   status: string | null
   totalPrice: number | null
   rooms?: IRoom
+  hasReview?: boolean
 }
 
 function BookingPage() {
@@ -105,8 +107,7 @@ function BookingPage() {
                   size="xl"
                   color={booking.status === 'unconfirmed' ? 'red' : 'teal'}
                 >
-                  {booking.status === 'unconfirmed' && '결제 대기중'}
-                  {booking.status === 'confirmed' && '예약 확정'}
+                  {BOOKING_STATUS_MAP[booking.status as BOOKING_STATUS_KEY]}
                 </Badge>
               </div>
             </div>
@@ -126,10 +127,10 @@ function BookingPage() {
               <BookingDetailData>
                 <div className="text-2xl">
                   {booking?.startDate &&
-                    format(new Date(booking.startDate), 'yyyy/mm/dd')}{' '}
+                    format(new Date(booking.startDate), 'yyyy/MM/dd')}{' '}
                   ~{' '}
                   {booking.endDate &&
-                    format(new Date(booking.endDate), 'yyyy/mm/dd')}
+                    format(new Date(booking.endDate), 'yyyy/MM/dd')}
                 </div>
                 <div className="flex items-center">
                   <div className="text-2xl">{booking.numNights}일</div>
@@ -173,12 +174,15 @@ function BookingPage() {
                   결제하기
                 </ConfirmButton>
               )}
-              <ConfirmButton
-                types="cancel"
-                onClick={() => deleteBooking(booking.id)}
-              >
-                취소하기
-              </ConfirmButton>
+              {booking.status === 'unconfirmed' ||
+                (booking.status === 'confirmed' && (
+                  <ConfirmButton
+                    types="cancel"
+                    onClick={() => deleteBooking(booking.id)}
+                  >
+                    취소하기
+                  </ConfirmButton>
+                ))}
             </BookingControl>
           </BookingItem>
         ))

@@ -29,7 +29,8 @@ function LoginForm() {
     }
   }
 
-  async function loginWithGoogle() {
+  async function loginWithGoogle(e: SyntheticEvent) {
+    e.preventDefault()
     await supabase.auth.signInWithOAuth({
       provider: 'google',
     })
