@@ -5,7 +5,7 @@ import { Rating, rem } from '@mantine/core'
 import { useSession } from '@supabase/auth-helpers-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { REVIEW_QUERY_KEY } from 'constants/queryKey'
@@ -15,6 +15,24 @@ function RoomReview() {
   const session = useSession()
   const router = useRouter()
   const queryClient = useQueryClient()
+
+  const getCurrentDimension = () => ({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
+
+  const [screenSize, setScreenSize] = useState(getCurrentDimension())
+
+  useEffect(() => {
+    const updateDimension = () => {
+      setScreenSize(getCurrentDimension())
+    }
+    window.addEventListener('resize', updateDimension)
+
+    return () => {
+      window.removeEventListener('resize', updateDimension)
+    }
+  }, [screenSize])
 
   const { mutate: deleteReview } = useMutation<unknown, unknown, any, any>(
     (id) =>
@@ -34,11 +52,11 @@ function RoomReview() {
   )
 
   return (
-    <>
+    <RoomReviewContainer>
       {roomReviews &&
         roomReviews.length > 0 &&
         roomReviews.map((review) => (
-          <RoomReviewContainer key={review.id}>
+          <RoomReviewItemContainer key={review.id}>
             <div className="flex justify-between items-center">
               <RoomReviewItem>
                 {review.images &&
@@ -68,27 +86,43 @@ function RoomReview() {
                   <CommandItem>
                     <IconEdit
                       onClick={() => router.push(`/review/${review.id}`)}
-                      size={rem(50)}
+                      size={screenSize.width < 1000 ? rem(30) : rem(50)}
                     />
                   </CommandItem>
                   <CommandItem>
                     <IconTrash
-                      size={rem(50)}
+                      size={screenSize.width < 1000 ? rem(30) : rem(50)}
                       onClick={() => deleteReview(review.id)}
                     />
                   </CommandItem>
                 </CommandGroup>
               )}
             </div>
-          </RoomReviewContainer>
+          </RoomReviewItemContainer>
         ))}
-    </>
+    </RoomReviewContainer>
   )
 }
 
 export default RoomReview
 
 const RoomReviewContainer = styled.div`
+  width: 100%;
+
+  @media (max-width: 1000px) {
+    position: absolute;
+    top: 115rem;
+    padding: 0 2.4rem;
+  }
+
+  @media (max-width: 700px) {
+    position: absolute;
+    top: 100rem;
+    padding: 0 2.8rem;
+  }
+`
+
+const RoomReviewItemContainer = styled.div`
   margin: 2rem 1rem;
   border: 1px solid var(--color-brand-200);
   padding: 2rem;
@@ -107,11 +141,18 @@ const ReviewEmail = styled.div``
 const CommandGroup = styled.div`
   display: flex;
   gap: 3rem;
+
+  @media (max-width: 700px) {
+    gap: 1.5rem;
+  }
 `
 
 const CommandItem = styled.div`
   &:hover {
     cursor: pointer;
     color: var(--color-brand-500);
+  }
+
+  @media (max-width: 700px) {
   }
 `
