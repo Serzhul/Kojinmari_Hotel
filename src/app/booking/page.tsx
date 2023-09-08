@@ -174,15 +174,15 @@ function BookingPage() {
                   결제하기
                 </ConfirmButton>
               )}
-              {booking.status === 'unconfirmed' ||
-                (booking.status === 'confirmed' && (
-                  <ConfirmButton
-                    types="cancel"
-                    onClick={() => deleteBooking(booking.id)}
-                  >
-                    취소하기
-                  </ConfirmButton>
-                ))}
+              {(booking.status === 'unconfirmed' ||
+                booking.status === 'confirmed') && (
+                <ConfirmButton
+                  types="cancel"
+                  onClick={() => deleteBooking(booking.id)}
+                >
+                  취소하기
+                </ConfirmButton>
+              )}
             </BookingControl>
           </BookingItem>
         ))

@@ -19,8 +19,7 @@ async function updateReview({
       .eq('id', reviewId)
       .select()
 
-    console.log(review, '업데이트 됨')
-
+    console.log(review)
     return review
   } catch (error) {
     console.error(error)

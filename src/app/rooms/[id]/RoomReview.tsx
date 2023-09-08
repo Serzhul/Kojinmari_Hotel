@@ -45,7 +45,13 @@ function RoomReview() {
                   review.images
                     .split(',')
                     .map((image) => (
-                      <Image key={review.id} src={image} alt={image} />
+                      <Image
+                        key={review.id}
+                        src={image}
+                        alt={image}
+                        width={100}
+                        height={100}
+                      />
                     ))}
                 <div className="flex flex-col items-center">
                   <Rating value={review.rate} readOnly size={rem(30)}></Rating>

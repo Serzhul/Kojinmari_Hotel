@@ -14,7 +14,7 @@ export interface IReview {
   roomId: string
   rate: number
   contents: string
-  images: string
+  images: string | null
   guests?: {
     email: string
   }
@@ -76,12 +76,16 @@ function ReviewEditPage({ params }: { params: { id: string } }) {
     },
   )
 
-  const handleSave = (editorContents: string) => {
+  const handleSave = (editorContents: {
+    contents: string
+    images: string | null
+  }) => {
     updateReview({
       reviewId: id,
       reviewContent: {
         rate,
-        contents: editorContents,
+        contents: editorContents.contents,
+        images: editorContents?.images,
       },
     })
   }
@@ -96,6 +100,7 @@ function ReviewEditPage({ params }: { params: { id: string } }) {
             <Review
               name={review.rooms?.name ?? ''}
               rate={rate}
+              handleRate={setRate}
               content={content}
               handleSave={handleSave}
             />

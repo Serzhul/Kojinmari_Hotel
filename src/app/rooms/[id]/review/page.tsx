@@ -8,13 +8,14 @@ import { useSession } from '@supabase/auth-helpers-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { REVIEW_QUERY_KEY } from 'constants/queryKey'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 function RoomReviewPage({ params }: { params: { id: string } }) {
   const { id: roomId } = params
   const searchParams = useSearchParams()
   const bookingId = searchParams.get('bookingId')
   const [rate, setRate] = useState<number>()
+
   const queryClient = useQueryClient()
   const router = useRouter()
   const session = useSession()
@@ -41,19 +42,26 @@ function RoomReviewPage({ params }: { params: { id: string } }) {
     },
   )
 
-  if (isLoading) return <Spinner />
+  const handleSave = useCallback(
+    (editorContents: { contents: string; images: string | null }) => {
+      addReview({
+        id: undefined,
+        bookingId: Number(bookingId),
+        guestId: session?.user.id ?? '',
+        roomId,
+        rate: rate ?? 1,
+        contents: editorContents.contents,
+        images: editorContents?.images,
+      })
+    },
+    [addReview, bookingId, rate, roomId, session?.user.id],
+  )
 
-  const handleSave = (editorContents: string) => {
-    addReview({
-      id: undefined,
-      bookingId: Number(bookingId),
-      guestId: session?.user.id ?? '',
-      roomId,
-      rate: rate ?? 1,
-      contents: editorContents,
-      images: '',
-    })
-  }
+  useEffect(() => {
+    console.log(rate)
+  }, [rate])
+
+  if (isLoading) return <Spinner />
 
   return (
     <RoomReviewPageContainer>

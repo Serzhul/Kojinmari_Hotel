@@ -13,16 +13,17 @@ function Review({
   name: string
   rate: number
   content?: string
-  handleSave: (editorContents: string) => void
+  handleSave: (editorContents: {
+    contents: string
+    images: string | null
+  }) => void
   handleRate?: Dispatch<SetStateAction<number | undefined>>
 }) {
   return (
     <ReviewEditContainer>
       <RatingContainer>
         <p>{name}의 숙박은 어떠셨나요?</p>
-        {rate && (
-          <Rating defaultValue={rate} onChange={handleRate} size={rem(40)} />
-        )}
+        {rate && <Rating value={rate} onChange={handleRate} size={rem(40)} />}
       </RatingContainer>
       <ContentsContainer>
         {content && <CustomEditor content={content} onSave={handleSave} />}

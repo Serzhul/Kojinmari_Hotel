@@ -14,7 +14,7 @@ async function getReviewlist(guestId: string) {
 
   let { data: reviews } = await supabase
     .from('reviews')
-    .select('rate, contents, images, bookings(roomId)')
+    .select('id, rate, contents, images, bookings(roomId)')
     .eq('guestId', guestId)
     .returns<ReviewsType[]>()
 

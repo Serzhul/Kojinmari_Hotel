@@ -6,13 +6,17 @@ import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
 import Image from '@tiptap/extension-image'
 import styled from '@emotion/styled'
-import { useRef } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { IconPhotoPlus } from '@tabler/icons-react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { REVIEW_IMAGE_URL } from 'constants/variables'
 import { useRouter } from 'next/navigation'
 
-function InsertImageControl() {
+function InsertImageControl({
+  handleImage,
+}: {
+  handleImage: Dispatch<SetStateAction<string | null>>
+}) {
   const { editor } = useRichTextEditorContext()
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -23,7 +27,11 @@ function InsertImageControl() {
     try {
       const { data } = await supabase.storage
         .from('review-images')
-        .upload(`test/${file.name}`, file)
+        .upload(`test/${file.name}`, file, {
+          cacheControl: '3600',
+        })
+
+      handleImage(`${REVIEW_IMAGE_URL}/${data?.path}`)
       return data?.path
     } catch (error) {
       console.error(error)
@@ -81,7 +89,7 @@ function CustomEditor({
   onSave,
 }: {
   content: string
-  onSave: (editorContents: string) => void
+  onSave: (editorContents: { contents: string; images: string | null }) => void
 }) {
   const router = useRouter()
 
@@ -96,6 +104,8 @@ function CustomEditor({
     ],
     content,
   })
+
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   return (
     <EditorContainer>
@@ -140,7 +150,7 @@ function CustomEditor({
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
-            <InsertImageControl />
+            <InsertImageControl handleImage={setImageUrl} />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 
@@ -149,7 +159,14 @@ function CustomEditor({
 
       <ButtonContainer>
         <CancelButton onClick={() => router.back()}>취소하기</CancelButton>
-        <SaveButton onClick={() => onSave(editor?.getHTML() ?? '')}>
+        <SaveButton
+          onClick={() =>
+            onSave({
+              contents: editor?.getHTML() ?? '',
+              images: imageUrl,
+            })
+          }
+        >
           저장하기
         </SaveButton>
       </ButtonContainer>
