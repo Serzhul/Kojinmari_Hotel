@@ -2,7 +2,6 @@
 import {
   IconHeart,
   IconBuildingSkyscraper,
-  IconLockSquare,
   IconStars,
 } from '@tabler/icons-react'
 import { Accordion, rem, Group, Text } from '@mantine/core'
@@ -30,13 +29,6 @@ const charactersList = [
     label: '리뷰 목록',
     icon: <IconStars size={rem(40)} />,
     content: <MyReviewlist />,
-  },
-
-  {
-    id: 'privacy',
-    label: '개인 정보 변경',
-    icon: <IconLockSquare size={rem(40)} />,
-    content: '비밀번호 및 개인 정보를 변경할 수 있습니다.',
   },
 ]
 
