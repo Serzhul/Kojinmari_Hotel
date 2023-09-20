@@ -6,6 +6,7 @@ import Spinner from '@components/Spinner'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/navigation'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 // Email regex: /\S+@\S+\.\S+/
 
@@ -40,8 +41,11 @@ function SignupForm() {
       {
         onSettled: () => {
           reset()
-          alert(
-            '가입에 성공했습니다. 입력하신 이메일로 인증 메일을 보내드렸습니다. 확인해주세요.',
+          toast.success(
+            <div>
+              가입에 성공했습니다. 입력하신 이메일 주소로 인증 메일을
+              보내드렸습니다.
+            </div>,
           )
           router.push('/')
         },
@@ -157,9 +161,8 @@ function SignupForm() {
 export default SignupForm
 
 const Input = styled.input`
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 0.2rem;
   box-shadow: var(--shadow-sm);
-
   width: 100%;
   border: none;
   border-radius: 0;

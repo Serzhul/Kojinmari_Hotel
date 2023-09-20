@@ -22,6 +22,7 @@ import { WISHLIST_QUERY_KEY } from 'constants/queryKey'
 import { ROOM_TYPE_MAP, ROOM_TYPE_KEY } from 'constants/ItemMaps'
 import SpinnerMini from '@components/SpinnerMini'
 import RoomReview from './RoomReview'
+import { toast } from 'react-toastify'
 interface IWishlist {
   userId: string
   roomIds: string[]
@@ -84,12 +85,21 @@ function RoomPage() {
 
   const addWishlist = () => {
     if (!session) {
-      alert('로그인이 필요합니다.')
+      toast.warn(<div className="text-2xl">로그인이 필요합니다.</div>)
       router.push('/login')
       return
     }
 
     updateWishlist({ userId, roomId })
+  }
+
+  const addBooking = () => {
+    if (!session) {
+      toast.warn(<div className="text-2xl">로그인이 필요합니다.</div>)
+      router.push('/login')
+      return
+    }
+    router.push(`/rooms/${roomId}/booking`)
   }
 
   const hasDiscount = roomDetail?.discount !== 0
@@ -215,11 +225,7 @@ function RoomPage() {
                   )}
                 </WishlistButton>
 
-                <BookingButton
-                  onClick={() => router.push(`/rooms/${roomId}/booking`)}
-                >
-                  예약하기
-                </BookingButton>
+                <BookingButton onClick={addBooking}>예약하기</BookingButton>
               </div>
             </StyledDescription>
           </>

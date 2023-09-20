@@ -6,6 +6,7 @@ import FormRowVertical from '@components/FormRowVertical'
 import { SyntheticEvent } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { AuthError } from '@supabase/supabase-js'
+import { toast } from 'react-toastify'
 
 function LoginForm() {
   const [loginError, setLoginError] = useState<AuthError>()
@@ -21,6 +22,7 @@ function LoginForm() {
         email,
         password,
       })
+      toast.success(<div className="text-2xl">로그인 성공</div>)
       if (error) {
         setLoginError(error)
       }

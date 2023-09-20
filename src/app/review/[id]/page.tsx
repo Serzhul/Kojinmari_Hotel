@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { redirect, useRouter } from 'next/navigation'
 import { ROOM_REVIEW_QUERY_KEY } from 'constants/queryKey'
 import Review from '@components/Review'
+import { toast } from 'react-toastify'
 
 export interface IReview {
   id: string | undefined
@@ -69,7 +70,9 @@ function ReviewEditPage({ params }: { params: { id: string } }) {
 
     {
       onSuccess: () => {
-        alert('리뷰를 성공적으로 수정했습니다.')
+        toast.success(
+          <div className="text-2xl">리뷰를 성공적으로 수정했습니다.</div>,
+        )
         queryClient.invalidateQueries([ROOM_REVIEW_QUERY_KEY])
         router.push(`/rooms/${review?.rooms?.id}`)
       },
