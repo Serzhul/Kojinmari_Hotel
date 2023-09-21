@@ -45,6 +45,10 @@ const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 1.6rem;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
 `
 
 const ContentsContainer = styled.div`

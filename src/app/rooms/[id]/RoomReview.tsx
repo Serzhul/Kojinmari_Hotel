@@ -57,30 +57,30 @@ function RoomReview() {
         roomReviews.length > 0 &&
         roomReviews.map((review) => (
           <RoomReviewItemContainer key={review.id}>
-            <div className="flex justify-between items-center">
-              <RoomReviewItem>
-                {review.images &&
-                  review.images
-                    .split(',')
-                    .map((image) => (
-                      <Image
-                        key={review.id}
-                        src={image}
-                        alt={image}
-                        width={100}
-                        height={100}
-                      />
-                    ))}
-                <div className="flex flex-col items-center">
-                  <Rating value={review.rate} readOnly size={rem(30)}></Rating>
-                  {review.guests && (
-                    <ReviewEmail>
-                      {maskCharacters(review.guests.email)}
-                    </ReviewEmail>
-                  )}
-                </div>
-                <div>{getPlainText(review.contents)}</div>
-              </RoomReviewItem>
+            <RoomReviewItem>
+              {review.images &&
+                review.images
+                  .split(',')
+                  .map((image) => (
+                    <Image
+                      key={review.id}
+                      src={image}
+                      alt={image}
+                      width={100}
+                      height={100}
+                    />
+                  ))}
+              <div className="flex flex-col items-center">
+                <Rating value={review.rate} readOnly size={rem(30)}></Rating>
+                {review.guests && (
+                  <ReviewEmail>
+                    {maskCharacters(review.guests.email)}
+                  </ReviewEmail>
+                )}
+              </div>
+              <div className="text-ellipsis whitespace-nowrap">
+                {getPlainText(review.contents)}
+              </div>
               {review.guestId === session?.user.id && (
                 <CommandGroup>
                   <CommandItem>
@@ -97,7 +97,7 @@ function RoomReview() {
                   </CommandItem>
                 </CommandGroup>
               )}
-            </div>
+            </RoomReviewItem>
           </RoomReviewItemContainer>
         ))}
     </RoomReviewContainer>
@@ -111,13 +111,13 @@ const RoomReviewContainer = styled.div`
 
   @media (max-width: 1000px) {
     position: absolute;
-    top: 115rem;
+    top: 125rem;
     padding: 0 2.4rem;
   }
 
   @media (max-width: 700px) {
     position: absolute;
-    top: 100rem;
+    top: 105rem;
     padding: 0 2.8rem;
   }
 `
@@ -134,16 +134,28 @@ const RoomReviewItem = styled.div`
   display: flex;
   align-items: center;
   gap: 3rem;
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 const ReviewEmail = styled.div``
 
 const CommandGroup = styled.div`
   display: flex;
+  margin-left: auto;
   gap: 3rem;
 
+  @media (max-width: 1000px) {
+    gap: 1rem;
+  }
+
   @media (max-width: 700px) {
-    gap: 1.5rem;
+    margin-left: 0;
+    margin-top: 1rem;
+    justify-content: center;
   }
 `
 

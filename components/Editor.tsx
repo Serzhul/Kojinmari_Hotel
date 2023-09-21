@@ -6,7 +6,7 @@ import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
 import Image from '@tiptap/extension-image'
 import styled from '@emotion/styled'
-import { Dispatch, SetStateAction, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { IconPhotoPlus } from '@tabler/icons-react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { REVIEW_IMAGE_URL } from 'constants/variables'
@@ -91,6 +91,8 @@ function CustomEditor({
   content: string
   onSave: (editorContents: { contents: string; images: string | null }) => void
 }) {
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
+
   const router = useRouter()
 
   const editor = useEditor({
@@ -104,8 +106,17 @@ function CustomEditor({
     ],
     content,
   })
+  const editorContents = editor?.getHTML()
 
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const imgTags = editorContents?.match(/<img [^>]*src="[^"]*"[^>]*>/gm)
+
+  useEffect(() => {
+    if (imgTags) {
+      setImageUrl(
+        imgTags.map((x: string) => x.replace(/.*src="([^"]*)".*/, '$1'))[0],
+      )
+    }
+  }, [imgTags])
 
   return (
     <EditorContainer>
@@ -160,12 +171,13 @@ function CustomEditor({
       <ButtonContainer>
         <CancelButton onClick={() => router.back()}>취소하기</CancelButton>
         <SaveButton
-          onClick={() =>
+          onClick={() => {
+            console.log(imageUrl, 'image')
             onSave({
               contents: editor?.getHTML() ?? '',
               images: imageUrl,
             })
-          }
+          }}
         >
           저장하기
         </SaveButton>
