@@ -6,9 +6,16 @@ import { useSession } from '@supabase/auth-helpers-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { IconEdit, IconTrash } from '@tabler/icons-react'
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconEdit,
+  IconTrash,
+} from '@tabler/icons-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { REVIEW_QUERY_KEY } from 'constants/queryKey'
+import Modal from '@components/Modal'
+import Carousel from 'nuka-carousel'
 
 function RoomReview() {
   const { roomReviews } = useRoomReviews()
@@ -57,47 +64,75 @@ function RoomReview() {
         roomReviews.length > 0 &&
         roomReviews.map((review) => (
           <RoomReviewItemContainer key={review.id}>
-            <RoomReviewItem>
-              {review.images &&
-                review.images
-                  .split(',')
-                  .map((image) => (
-                    <Image
-                      key={review.id}
-                      src={image}
-                      alt={image}
-                      width={100}
-                      height={100}
-                    />
+            <Modal>
+              <RoomReviewItem>
+                {review.images &&
+                  review.images.split(',').map((image) => (
+                    <>
+                      <Modal.Open opens="review" key={review.id}>
+                        <Image
+                          src={image}
+                          alt={image}
+                          width={100}
+                          height={100}
+                        />
+                      </Modal.Open>
+                      <Modal.Window name="review">
+                        <Carousel
+                          cellAlign="center"
+                          defaultControlsConfig={{
+                            nextButtonStyle: {
+                              borderRadius: '100%',
+                            },
+                            nextButtonText: <IconArrowRight size={rem(20)} />,
+                            prevButtonStyle: {
+                              borderRadius: '100%',
+                            },
+                            prevButtonText: <IconArrowLeft size={rem(20)} />,
+                          }}
+                        >
+                          <Image
+                            src={image}
+                            alt={image}
+                            width="0"
+                            height="0"
+                            sizes="100vw"
+                            className="w-full h-auto"
+                          />
+                        </Carousel>
+                      </Modal.Window>
+                    </>
                   ))}
-              <div className="flex flex-col items-center">
-                <Rating value={review.rate} readOnly size={rem(30)}></Rating>
-                {review.guests && (
-                  <ReviewEmail>
-                    {maskCharacters(review.guests.email)}
-                  </ReviewEmail>
+
+                <div className="flex flex-col items-center">
+                  <Rating value={review.rate} readOnly size={rem(30)}></Rating>
+                  {review.guests && (
+                    <ReviewEmail>
+                      {maskCharacters(review.guests.email)}
+                    </ReviewEmail>
+                  )}
+                </div>
+                <div className="text-ellipsis whitespace-nowrap">
+                  {getPlainText(review.contents)}
+                </div>
+                {review.guestId === session?.user.id && (
+                  <CommandGroup>
+                    <CommandItem>
+                      <IconEdit
+                        onClick={() => router.push(`/review/${review.id}`)}
+                        size={screenSize.width < 1000 ? rem(30) : rem(50)}
+                      />
+                    </CommandItem>
+                    <CommandItem>
+                      <IconTrash
+                        size={screenSize.width < 1000 ? rem(30) : rem(50)}
+                        onClick={() => deleteReview(review.id)}
+                      />
+                    </CommandItem>
+                  </CommandGroup>
                 )}
-              </div>
-              <div className="text-ellipsis whitespace-nowrap">
-                {getPlainText(review.contents)}
-              </div>
-              {review.guestId === session?.user.id && (
-                <CommandGroup>
-                  <CommandItem>
-                    <IconEdit
-                      onClick={() => router.push(`/review/${review.id}`)}
-                      size={screenSize.width < 1000 ? rem(30) : rem(50)}
-                    />
-                  </CommandItem>
-                  <CommandItem>
-                    <IconTrash
-                      size={screenSize.width < 1000 ? rem(30) : rem(50)}
-                      onClick={() => deleteReview(review.id)}
-                    />
-                  </CommandItem>
-                </CommandGroup>
-              )}
-            </RoomReviewItem>
+              </RoomReviewItem>
+            </Modal>
           </RoomReviewItemContainer>
         ))}
     </RoomReviewContainer>
