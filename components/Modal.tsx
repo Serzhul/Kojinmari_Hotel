@@ -2,7 +2,6 @@ import { useOutsideClick } from '@/hooks/useOutsideClick'
 import styled from '@emotion/styled'
 import { IconX } from '@tabler/icons-react'
 import React, {
-  ReactNode,
   createContext,
   useState,
   Dispatch,
@@ -10,6 +9,7 @@ import React, {
   useContext,
   cloneElement,
   ReactElement,
+  ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
 
