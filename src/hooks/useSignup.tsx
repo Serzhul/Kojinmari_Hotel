@@ -8,7 +8,12 @@ export function useSignup() {
         method: 'POST',
         body: JSON.stringify(userData),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Something went wrong')
+          }
+          return res.json()
+        })
         .then((data) => data.items),
   })
 

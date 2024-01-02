@@ -20,8 +20,15 @@ export interface FormValues {
 
 function SignupForm() {
   const router = useRouter()
-  const { register, formState, getValues, handleSubmit, reset, watch } =
-    useForm<FormValues>()
+  const {
+    register,
+    formState,
+    getValues,
+    handleSubmit,
+    reset,
+    watch,
+    setError,
+  } = useForm<FormValues>()
   const { errors } = formState
   const { signup, isLoading } = useSignup()
 
@@ -39,7 +46,7 @@ function SignupForm() {
         password,
       },
       {
-        onSettled: () => {
+        onSuccess: () => {
           reset()
           toast.success(
             <div>
@@ -48,6 +55,12 @@ function SignupForm() {
             </div>,
           )
           router.push('/')
+        },
+        onError: () => {
+          setError('email', {
+            type: 'validate',
+            message: '해당 이메일이 이미 존재합니다',
+          })
         },
       },
     )

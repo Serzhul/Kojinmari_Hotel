@@ -17,6 +17,7 @@ function LoginForm() {
 
   const handleSignIn = async (e: SyntheticEvent) => {
     e.preventDefault()
+
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,

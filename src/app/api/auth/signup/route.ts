@@ -24,7 +24,6 @@ async function createUser({
         .eq('email', email)
         .select()
 
-      console.log(data)
       return data
     }
   } catch (error) {
@@ -48,6 +47,18 @@ export async function POST(req: NextRequest) {
 
   try {
     const user = await createUser(userData)
+
+    if (user && user.length > 0) {
+      return NextResponse.json(
+        {
+          message: 'Already Existed user',
+          items: user,
+        },
+        {
+          status: 400,
+        },
+      )
+    }
 
     return NextResponse.json(
       {
